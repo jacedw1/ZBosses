@@ -9,6 +9,7 @@ import me.zelevon.zbosses.mobs.bosses.KnightOfSouls;
 import me.zelevon.zbosses.utils.MessageSender;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,8 +37,21 @@ public class BossEggListener implements Listener {
             return;
         }
         ItemStack item = e.getItem();
+
+        if(item == null || !(item.getType() == Material.MONSTER_EGG)) {
+            return;
+        }
+
         net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
-        if(nmsItem.getTag() == null || !(nmsItem.getTag().getBoolean("BossEgg"))) {
+        if(nmsItem.getTag() == null) {
+            return;
+        }
+
+        try {
+            if (!(nmsItem.getTag().getBoolean("BossEgg"))) {
+                return;
+            }
+        } catch (NullPointerException exception) {
             return;
         }
 
