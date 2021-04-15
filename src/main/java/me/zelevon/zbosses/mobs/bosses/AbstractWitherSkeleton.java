@@ -21,6 +21,7 @@ public abstract class AbstractWitherSkeleton extends EntitySkeleton {
     private LivingMobManager mobManager;
     private Config.MobsConf conf;
     private boolean canLifeSteal = false;
+    private float lifeStealPercent = 0.1F;
 
     public AbstractWitherSkeleton(Location location) {
         super(((CraftWorld)location.getWorld()).getHandle());
@@ -99,5 +100,13 @@ public abstract class AbstractWitherSkeleton extends EntitySkeleton {
 
     public void setCanLifeSteal(boolean canLifeSteal) {
         this.canLifeSteal = canLifeSteal;
+    }
+
+    public float getLifeStealPercent() {
+        return lifeStealPercent;
+    }
+
+    public void setLifeStealPercent(float lifeStealPercent) {
+        this.lifeStealPercent = lifeStealPercent;
     }
 }

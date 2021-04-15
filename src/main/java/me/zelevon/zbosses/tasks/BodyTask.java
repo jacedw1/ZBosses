@@ -4,7 +4,6 @@ import me.zelevon.zbosses.ZBosses;
 import me.zelevon.zbosses.mobs.LivingMobManager;
 import me.zelevon.zbosses.mobs.bosses.KnightOfBody;
 import me.zelevon.zbosses.mobs.skills.RandomBuffs;
-import org.bukkit.Effect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class BodyTask extends BukkitRunnable {
@@ -26,5 +25,6 @@ public class BodyTask extends BukkitRunnable {
             mobManager.removeBoss(this.mob);
             return;
         }
+        RandomBuffs.fireballBuff(this.mob);
     }
 }
