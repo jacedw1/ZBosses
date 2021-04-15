@@ -1,0 +1,3 @@
+name: ZBosses
+version: @version@
+main: me.zelevon.zbosses.ZBosses
