@@ -1,5 +1,6 @@
 package me.zelevon.zbosses.mobs.bosses;
 
+import me.zelevon.zbosses.config.mobs.BossConf;
 import me.zelevon.zbosses.config.mobs.KnightOfBodyConf;
 import me.zelevon.zbosses.tasks.knightofbody.BodyTaskManager;
 import org.bukkit.Location;
@@ -32,5 +33,10 @@ public class KnightOfBody extends AbstractWitherSkeleton {
     @Override
     public double randomBuffRadius() {
         return mob.getRandomBuffRadius();
+    }
+
+    @Override
+    public BossConf getBossConf() {
+        return this.mob;
     }
 }

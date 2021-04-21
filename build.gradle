@@ -33,6 +33,7 @@ dependencies {
     compile 'org.spongepowered:configurate-gson:4.0.0'
     // INTERNAL DEPENDENCIES
     compile fileTree(dir: 'libs', include: '*.jar')
+    compile 'org.apache.commons:commons-collections4:4.4'
 }
 
 processResources {

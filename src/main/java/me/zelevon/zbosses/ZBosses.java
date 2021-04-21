@@ -7,6 +7,7 @@ import me.zelevon.zbosses.config.Config;
 import me.zelevon.zbosses.items.ItemManager;
 import me.zelevon.zbosses.listeners.BossEggListener;
 import me.zelevon.zbosses.listeners.EntityDamageListener;
+import me.zelevon.zbosses.listeners.EntityDeathListener;
 import me.zelevon.zbosses.mobs.LivingMobManager;
 import me.zelevon.zbosses.mobs.bosses.*;
 import me.zelevon.zbosses.tasks.NameTask;
@@ -44,6 +45,7 @@ public final class ZBosses extends JavaPlugin {
 
         this.getServer().getPluginManager().registerEvents(new BossEggListener(), this);
         this.getServer().getPluginManager().registerEvents(new EntityDamageListener(), this);
+        this.getServer().getPluginManager().registerEvents(new EntityDeathListener(), this);
 
         this.commandManager = new PaperCommandManager(this);
         this.commandManager.getCommandCompletions().registerCompletion("custommobs", c -> ImmutableList.of("Knight_of_Souls", "Knight_of_Hearts", "Knight_of_Body", "God_of_Mind"));

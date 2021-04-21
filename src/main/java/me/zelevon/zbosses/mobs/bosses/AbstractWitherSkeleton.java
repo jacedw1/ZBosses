@@ -2,6 +2,7 @@ package me.zelevon.zbosses.mobs.bosses;
 
 import me.zelevon.zbosses.ZBosses;
 import me.zelevon.zbosses.config.Config;
+import me.zelevon.zbosses.config.mobs.BossConf;
 import me.zelevon.zbosses.mobs.LivingMobManager;
 import me.zelevon.zbosses.utils.MessageSender;
 import me.zelevon.zbosses.utils.NMSUtils;
@@ -41,6 +42,8 @@ public abstract class AbstractWitherSkeleton extends EntitySkeleton {
     public abstract String getName();
 
     public abstract double randomBuffRadius();
+
+    public abstract BossConf getBossConf();
 
     public void spawn(Player player, String message) {
         this.spawn();

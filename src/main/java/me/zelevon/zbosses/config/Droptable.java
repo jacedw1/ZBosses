@@ -46,39 +46,39 @@ public class Droptable {
         put("give %player% emerald 1", 0.5D);
     }};
 
-    public int getFirstHighestDamageRewardCountMin() {
+    public int getFirstMin() {
         return firstHighestDamageRewardCountMin;
     }
 
-    public int getFirstHighestDamageRewardCountMax() {
+    public int getFirstMax() {
         return firstHighestDamageRewardCountMax;
     }
 
-    public Map<String, Double> getFirstHighestDamageDrops() {
+    public Map<String, Double> getFirstDrops() {
         return firstHighestDamageDrops;
     }
 
-    public int getSecondHighestDamageRewardCountMin() {
+    public int getSecondMin() {
         return secondHighestDamageRewardCountMin;
     }
 
-    public int getSecondHighestDamageRewardCountMax() {
+    public int getSecondMax() {
         return secondHighestDamageRewardCountMax;
     }
 
-    public Map<String, Double> getSecondHighestDamageDrops() {
+    public Map<String, Double> getSecondDrops() {
         return secondHighestDamageDrops;
     }
 
-    public int getThirdHighestDamageRewardCountMin() {
+    public int getThirdMin() {
         return thirdHighestDamageRewardCountMin;
     }
 
-    public int getThirdHighestDamageRewardCountMax() {
+    public int getThirdMax() {
         return thirdHighestDamageRewardCountMax;
     }
 
-    public Map<String, Double> getThirdHighestDamageDrops() {
+    public Map<String, Double> getThirdDrops() {
         return thirdHighestDamageDrops;
     }
 }

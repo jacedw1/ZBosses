@@ -40,6 +40,10 @@ public class MessageSender {
         return String.format(message, replacements);
     }
 
+    public String replace(String message, String key, String replacement) {
+        return message.replaceAll(key, replacement);
+    }
+
     public String colorize(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
     }

@@ -1,5 +1,6 @@
 package me.zelevon.zbosses.mobs.bosses;
 
+import me.zelevon.zbosses.config.mobs.BossConf;
 import me.zelevon.zbosses.config.mobs.GodOfMindConf;
 import org.bukkit.Location;
 
@@ -29,5 +30,10 @@ public class GodOfMind extends AbstractWitherSkeleton {
     @Override
     public double randomBuffRadius() {
         return mob.getRandomBuffRadius();
+    }
+
+    @Override
+    public BossConf getBossConf() {
+        return this.mob;
     }
 }

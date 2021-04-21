@@ -6,7 +6,7 @@ import org.spongepowered.configurate.objectmapping.meta.Setting;
 
 @SuppressWarnings({"unused", "FieldMayBeFinal"})
 @ConfigSerializable
-public class GodOfMindConf {
+public class GodOfMindConf implements BossConf {
 
     @Setting
     private Droptable drops;
@@ -34,6 +34,11 @@ public class GodOfMindConf {
 
     @Setting
     private double randomBuffRadius = 5.0;
+
+    @Override
+    public Droptable getDrops() {
+        return drops;
+    }
 
     public String getHelmet() {
         return helmet;

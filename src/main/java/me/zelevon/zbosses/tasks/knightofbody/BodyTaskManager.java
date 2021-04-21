@@ -36,7 +36,6 @@ public class BodyTaskManager extends BukkitRunnable {
         if(health <= 0) {
             this.randomBuffTask.cancel();
             this.blindTask.cancel();
-            this.mobManager.removeBoss(this.boss); //might replace with entity death event later
             this.cancel();
             return;
         }

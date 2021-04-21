@@ -1,21 +1,25 @@
 package me.zelevon.zbosses.mobs;
 
 import me.zelevon.zbosses.mobs.bosses.AbstractWitherSkeleton;
+import org.apache.commons.collections4.BidiMap;
+import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @SuppressWarnings({"FieldMayBeFinal", "unused", "rawtypes"})
 public class LivingMobManager {
 
     private List<AbstractWitherSkeleton> bosses;
     private List<LivingEntity> minions;
+    private Map<AbstractWitherSkeleton, BidiMap<Player, Double>> damageTracker;
     private static LivingMobManager instance;
 
     private LivingMobManager(){
         bosses = new ArrayList<>();
         minions = new ArrayList<>();
+        damageTracker = new HashMap<>();
     }
 
     public static LivingMobManager get(){
@@ -35,6 +39,7 @@ public class LivingMobManager {
 
     public void addBoss(AbstractWitherSkeleton boss){
         this.bosses.add(boss);
+        this.damageTracker.put(boss, new DualHashBidiMap<>());
     }
 
     public void addMinion(LivingEntity minion){
@@ -61,6 +66,7 @@ public class LivingMobManager {
 
     public void removeBoss(AbstractWitherSkeleton boss) {
         this.bosses.remove(boss);
+        this.damageTracker.remove(boss);
     }
 
     public void removeMinion(LivingEntity minion){
@@ -95,5 +101,31 @@ public class LivingMobManager {
         for(AbstractWitherSkeleton boss : bosses) {
             boss.updateName();
         }
+    }
+
+    public void addDamage(AbstractWitherSkeleton boss, Player player, double damage) {
+        if(!damageTracker.containsKey(boss)) {
+            damageTracker.put(boss, new DualHashBidiMap<Player, Double>() {{
+                put(player, damage);
+            }});
+            return;
+        }
+        BidiMap<Player, Double> playerDamage = damageTracker.get(boss);
+        if(!playerDamage.containsKey(player)) {
+            playerDamage.put(player, damage);
+            return;
+        }
+        playerDamage.replace(player, playerDamage.get(player) + damage);
+    }
+
+    public List<Player> getTopThreePlayers(AbstractWitherSkeleton boss) {
+        BidiMap<Player, Double> playerDamage = damageTracker.get(boss);
+        Double[] damages = Arrays.stream(playerDamage.values().toArray(new Double[0])).sorted().toArray(Double[]::new);
+        int topBound = Math.min(damages.length-1, 2);
+        List<Player> players = new ArrayList<>();
+        for(int i = topBound; i >= 0; i--) {
+            players.add(playerDamage.getKey(damages[i]));
+        }
+        return players;
     }
 }
