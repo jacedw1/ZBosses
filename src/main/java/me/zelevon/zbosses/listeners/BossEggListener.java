@@ -19,6 +19,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+@SuppressWarnings("FieldMayBeFinal")
 public class BossEggListener implements Listener {
 
     private ItemManager itemManager;

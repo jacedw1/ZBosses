@@ -16,6 +16,7 @@ import net.minecraft.server.v1_8_R3.EntitySkeleton;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+@SuppressWarnings({"FieldCanBeLocal", "FieldMayBeFinal"})
 public final class ZBosses extends JavaPlugin {
 
     private static ZBosses instance;
@@ -45,9 +46,7 @@ public final class ZBosses extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new EntityDamageListener(), this);
 
         this.commandManager = new PaperCommandManager(this);
-        this.commandManager.getCommandCompletions().registerCompletion("custommobs", c -> {
-            return ImmutableList.of("Knight_of_Souls", "Knight_of_Hearts", "Knight_of_Body", "God_of_Mind");
-        });
+        this.commandManager.getCommandCompletions().registerCompletion("custommobs", c -> ImmutableList.of("Knight_of_Souls", "Knight_of_Hearts", "Knight_of_Body", "God_of_Mind"));
         this.commandManager.registerCommand(new ZBossesCommands());
 
         this.task = new NameTask().runTaskTimerAsynchronously(this, 0, 10);

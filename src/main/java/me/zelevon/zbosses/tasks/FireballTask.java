@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
 import org.bukkit.scheduler.BukkitRunnable;
 
+@SuppressWarnings("FieldMayBeFinal")
 public class FireballTask extends BukkitRunnable {
 
     private AbstractWitherSkeleton boss;
@@ -22,7 +23,7 @@ public class FireballTask extends BukkitRunnable {
     public void run() {
         EntityLiving target = boss.getGoalTarget();
         boss.setGoalTarget((((CraftPlayer)player).getHandle()), TargetReason.CUSTOM, false);
-        Fireball fireball = ((LivingEntity) (boss.getBukkitEntity())).launchProjectile(Fireball.class);
+        ((LivingEntity) (boss.getBukkitEntity())).launchProjectile(Fireball.class);
         boss.setGoalTarget(target, TargetReason.CUSTOM, false);
     }
 }

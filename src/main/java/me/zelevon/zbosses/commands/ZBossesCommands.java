@@ -16,6 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 
+@SuppressWarnings({"FieldMayBeFinal", "UnusedAssignment"})
 @CommandAlias("zbosses|zb|zboss|bosses|boss")
 public class ZBossesCommands extends BaseCommand {
     private ZBosses plugin;
@@ -130,14 +131,13 @@ public class ZBossesCommands extends BaseCommand {
         }
 
         if(seconds == null){
-            seconds = new Long(0);
+            seconds = 0L;
         }
         long ticks = seconds * 20;
 
         if(ticks != 0) {
             messageSender.msg(sender, prefix + "Scheduled a spawn in " + seconds + " seconds");
         }
-        if(entity != null)
-            Bukkit.getScheduler().runTaskLater(plugin, () -> entity.spawn(sender, message), ticks);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> entity.spawn(sender, message), ticks);
     }
 }

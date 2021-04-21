@@ -11,6 +11,7 @@ import java.util.Map;
 
 //NOT my class, simply using resources from the internet for entity registry
 
+@SuppressWarnings("unused")
 public class NMSUtils {
 
     public static final int WEAPON_SLOT = 0;
@@ -21,7 +22,7 @@ public class NMSUtils {
     public static void registerEntity(String name, int id, Class<? extends EntityInsentient> nmsClass, Class<? extends EntityInsentient> customClass){
         try {
 
-            List<Map<?, ?>> dataMap = new ArrayList<Map<?, ?>>();
+            List<Map<?, ?>> dataMap = new ArrayList<>();
             for (Field f : EntityTypes.class.getDeclaredFields()){
                 if (f.getType().getSimpleName().equals(Map.class.getSimpleName())){
                     f.setAccessible(true);

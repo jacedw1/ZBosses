@@ -1,5 +1,9 @@
 package me.zelevon.zbosses.config;
 
+import me.zelevon.zbosses.config.mobs.GodOfMindConf;
+import me.zelevon.zbosses.config.mobs.KnightOfBodyConf;
+import me.zelevon.zbosses.config.mobs.KnightOfHeartsConf;
+import me.zelevon.zbosses.config.mobs.KnightOfSoulsConf;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.gson.GsonConfigurationLoader;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
@@ -8,6 +12,7 @@ import org.spongepowered.configurate.objectmapping.meta.Setting;
 import java.io.File;
 import java.io.IOException;
 
+@SuppressWarnings({"unused", "FieldMayBeFinal", "ResultOfMethodCallIgnored"})
 public class Config {
 
     public static MobsConf setup(){
@@ -38,271 +43,31 @@ public class Config {
     public static class MobsConf {
 
         @Setting
-        private KnightOfHearts knightOfHearts;
+        private KnightOfHeartsConf knightOfHearts;
 
         @Setting
-        private KnightOfSouls knightOfSouls;
+        private KnightOfSoulsConf knightOfSouls;
 
         @Setting
-        private KnightOfBody knightOfBody;
+        private KnightOfBodyConf knightOfBody;
 
         @Setting
-        private GodOfMind godOfMind;
+        private GodOfMindConf godOfMind;
 
-        public KnightOfHearts getKnightOfHearts() {
+        public KnightOfHeartsConf getKnightOfHearts() {
             return knightOfHearts;
         }
 
-        public KnightOfSouls getKnightOfSouls() {
+        public KnightOfSoulsConf getKnightOfSouls() {
             return knightOfSouls;
         }
 
-        public KnightOfBody getKnightOfBody() {
+        public KnightOfBodyConf getKnightOfBody() {
             return knightOfBody;
         }
 
-        public GodOfMind getGodOfMind() {
+        public GodOfMindConf getGodOfMind() {
             return godOfMind;
-        }
-    }
-
-    @ConfigSerializable
-    public static class KnightOfHearts {
-        
-        @Setting
-        private String helmet = "DIAMOND_HELMET";
-
-        @Setting
-        private String chestplate = "DIAMOND_CHESTPLATE";
-
-        @Setting
-        private String leggings = "DIAMOND_LEGGINGS";
-
-        @Setting
-        private String boots = "DIAMOND_BOOTS";
-
-        @Setting
-        private String weapon = "AIR";
-
-        @Setting
-        private int health = 100;
-
-        @Setting
-        private int randomBuffTimer = 30;
-
-        @Setting
-        private double randomBuffRadius = 5.0;
-
-        public String getHelmet() {
-            return helmet;
-        }
-
-        public String getChestplate() {
-            return chestplate;
-        }
-
-        public String getLeggings() {
-            return leggings;
-        }
-
-        public String getBoots() {
-            return boots;
-        }
-
-        public String getWeapon() {
-            return weapon;
-        }
-
-        public int getHealth() {
-            return health;
-        }
-
-        public int getRandomBuffTimer() {
-            return randomBuffTimer;
-        }
-        
-        public double getRandomBuffRadius() {
-            return randomBuffRadius;
-        }
-    }
-
-    @ConfigSerializable
-    public static class KnightOfSouls {
-
-        @Setting
-        private String helmet = "DIAMOND_HELMET";
-
-        @Setting
-        private String chestplate = "DIAMOND_CHESTPLATE";
-
-        @Setting
-        private String leggings = "DIAMOND_LEGGINGS";
-
-        @Setting
-        private String boots = "DIAMOND_BOOTS";
-
-        @Setting
-        private String weapon = "AIR";
-
-        @Setting
-        private int health = 100;
-
-        @Setting
-        private int randomBuffTimer = 30;
-
-        @Setting
-        private double randomBuffRadius = 5.0;
-
-        public String getHelmet() {
-            return helmet;
-        }
-
-        public String getChestplate() {
-            return chestplate;
-        }
-
-        public String getLeggings() {
-            return leggings;
-        }
-
-        public String getBoots() {
-            return boots;
-        }
-
-        public String getWeapon() {
-            return weapon;
-        }
-
-        public int getHealth() {
-            return health;
-        }
-
-        public int getRandomBuffTimer() {
-            return randomBuffTimer;
-        }
-
-        public double getRandomBuffRadius() {
-            return randomBuffRadius;
-        }
-    }
-
-    @ConfigSerializable
-    public static class KnightOfBody {
-
-        @Setting
-        private String helmet = "DIAMOND_HELMET";
-
-        @Setting
-        private String chestplate = "DIAMOND_CHESTPLATE";
-
-        @Setting
-        private String leggings = "DIAMOND_LEGGINGS";
-
-        @Setting
-        private String boots = "DIAMOND_BOOTS";
-
-        @Setting
-        private String weapon = "AIR";
-
-        @Setting
-        private int health = 100;
-
-        @Setting
-        private int randomBuffTimer = 30;
-
-        @Setting
-        private double randomBuffRadius = 5.0;
-
-        public String getHelmet() {
-            return helmet;
-        }
-
-        public String getChestplate() {
-            return chestplate;
-        }
-
-        public String getLeggings() {
-            return leggings;
-        }
-
-        public String getBoots() {
-            return boots;
-        }
-
-        public String getWeapon() {
-            return weapon;
-        }
-
-        public int getHealth() {
-            return health;
-        }
-
-        public int getRandomBuffTimer() {
-            return randomBuffTimer;
-        }
-
-        public double getRandomBuffRadius() {
-            return randomBuffRadius;
-        }
-    }
-
-    @ConfigSerializable
-    public static class GodOfMind {
-
-        @Setting
-        private String helmet = "DIAMOND_HELMET";
-
-        @Setting
-        private String chestplate = "DIAMOND_CHESTPLATE";
-
-        @Setting
-        private String leggings = "DIAMOND_LEGGINGS";
-
-        @Setting
-        private String boots = "DIAMOND_BOOTS";
-
-        @Setting
-        private String weapon = "AIR";
-
-        @Setting
-        private int health = 100;
-
-        @Setting
-        private int randomBuffTimer = 30;
-
-        @Setting
-        private double randomBuffRadius = 5.0;
-
-        public String getHelmet() {
-            return helmet;
-        }
-
-        public String getChestplate() {
-            return chestplate;
-        }
-
-        public String getLeggings() {
-            return leggings;
-        }
-
-        public String getBoots() {
-            return boots;
-        }
-
-        public String getWeapon() {
-            return weapon;
-        }
-
-        public int getHealth() {
-            return health;
-        }
-
-        public int getRandomBuffTimer() {
-            return randomBuffTimer;
-        }
-
-        public double getRandomBuffRadius() {
-            return randomBuffRadius;
         }
     }
 

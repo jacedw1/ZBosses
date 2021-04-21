@@ -1,12 +1,13 @@
 package me.zelevon.zbosses.mobs.bosses;
 
-import me.zelevon.zbosses.config.Config;
-import me.zelevon.zbosses.tasks.BodyTask;
+import me.zelevon.zbosses.config.mobs.KnightOfBodyConf;
+import me.zelevon.zbosses.tasks.knightofbody.BodyTaskManager;
 import org.bukkit.Location;
 
+@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 public class KnightOfBody extends AbstractWitherSkeleton {
 
-    private Config.KnightOfBody mob;
+    private KnightOfBodyConf mob;
     private String name = "&c&lKnight of Body";
 
     public KnightOfBody(Location location) {
@@ -20,7 +21,7 @@ public class KnightOfBody extends AbstractWitherSkeleton {
         this.setBoots(this.parseItem(mob.getBoots()));
         this.setWeapon(this.parseItem(mob.getWeapon()));
 //        new BodyTask(this).runTaskTimerAsynchronously(this.getPlugin(), 0, 100);
-        new BodyTask(this).runTaskTimer(this.getPlugin(), 0, 300);
+        new BodyTaskManager(this).runTaskTimer(this.getPlugin(), 0, 10);
     }
 
     @Override

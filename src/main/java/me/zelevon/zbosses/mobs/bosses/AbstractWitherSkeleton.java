@@ -6,6 +6,7 @@ import me.zelevon.zbosses.mobs.LivingMobManager;
 import me.zelevon.zbosses.utils.MessageSender;
 import me.zelevon.zbosses.utils.NMSUtils;
 import net.minecraft.server.v1_8_R3.EntitySkeleton;
+import net.minecraft.server.v1_8_R3.GenericAttributes;
 import net.minecraft.server.v1_8_R3.ItemStack;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,12 +15,14 @@ import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 
+@SuppressWarnings("FieldMayBeFinal")
 public abstract class AbstractWitherSkeleton extends EntitySkeleton {
 
     private ZBosses plugin;
     private MessageSender messageSender;
     private LivingMobManager mobManager;
     private Config.MobsConf conf;
+    private double baseSpeed;
     private boolean canLifeSteal = false;
     private float lifeStealPercent = 0.1F;
 
@@ -29,6 +32,7 @@ public abstract class AbstractWitherSkeleton extends EntitySkeleton {
         this.messageSender = plugin.getMessageSender();
         this.mobManager = plugin.getMobManager();
         this.conf = plugin.getConf();
+        this.baseSpeed = this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).getValue();
         this.setSkeletonType(1);
         this.setCustomNameVisible(true);
         this.setPosition(location.getX(), location.getY(), location.getZ());
@@ -108,5 +112,9 @@ public abstract class AbstractWitherSkeleton extends EntitySkeleton {
 
     public void setLifeStealPercent(float lifeStealPercent) {
         this.lifeStealPercent = lifeStealPercent;
+    }
+
+    public void resetSpeed() {
+        this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(baseSpeed);
     }
 }

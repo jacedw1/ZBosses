@@ -3,6 +3,7 @@ package me.zelevon.zbosses.items;
 import me.zelevon.zbosses.ZBosses;
 import me.zelevon.zbosses.utils.MessageSender;
 
+@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 public class ItemManager {
 
     private static ItemManager instance;

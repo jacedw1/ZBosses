@@ -6,6 +6,7 @@ import org.bukkit.entity.LivingEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"FieldMayBeFinal", "unused", "rawtypes"})
 public class LivingMobManager {
 
     private List<AbstractWitherSkeleton> bosses;
@@ -50,7 +51,9 @@ public class LivingMobManager {
         }
         if(!isBoss) {
             for(LivingEntity mob : minions){
-                if(c.isInstance(mob));
+                if(c.isInstance(mob)) {
+                    return true;
+                }
             }
         }
         return false;

@@ -1,11 +1,12 @@
 package me.zelevon.zbosses.mobs.bosses;
 
-import me.zelevon.zbosses.config.Config;
+import me.zelevon.zbosses.config.mobs.KnightOfHeartsConf;
 import org.bukkit.Location;
 
+@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 public class KnightOfHearts extends AbstractWitherSkeleton {
 
-    private Config.KnightOfHearts mob;
+    private KnightOfHeartsConf mob;
     private String name = "&d&lKnight of Hearts";
 
     public KnightOfHearts(Location location) {

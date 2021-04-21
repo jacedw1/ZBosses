@@ -1,11 +1,12 @@
 package me.zelevon.zbosses.mobs.bosses;
 
-import me.zelevon.zbosses.config.Config;
+import me.zelevon.zbosses.config.mobs.GodOfMindConf;
 import org.bukkit.Location;
 
+@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 public class GodOfMind extends AbstractWitherSkeleton {
 
-    private Config.GodOfMind mob;
+    private GodOfMindConf mob;
     private String name = "&6&lGod of Mind";
 
     public GodOfMind(Location location) {
