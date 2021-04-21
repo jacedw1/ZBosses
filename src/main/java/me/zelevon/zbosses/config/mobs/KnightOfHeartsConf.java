@@ -35,6 +35,9 @@ public class KnightOfHeartsConf implements BossConf {
     @Setting
     private double randomBuffRadius = 5.0;
 
+    @Setting
+    private int knockbackTimer = 5;
+
     @Override
     public Droptable getDrops() {
         return drops;
@@ -64,11 +67,16 @@ public class KnightOfHeartsConf implements BossConf {
         return health;
     }
 
+    @Override
     public int getRandomBuffTimer() {
-        return randomBuffTimer;
+        return randomBuffTimer * 20;
     }
 
     public double getRandomBuffRadius() {
         return randomBuffRadius;
+    }
+
+    public int getKnockbackTimer() {
+        return knockbackTimer * 20;
     }
 }

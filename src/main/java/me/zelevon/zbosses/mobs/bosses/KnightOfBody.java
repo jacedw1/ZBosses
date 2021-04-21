@@ -2,7 +2,7 @@ package me.zelevon.zbosses.mobs.bosses;
 
 import me.zelevon.zbosses.config.mobs.BossConf;
 import me.zelevon.zbosses.config.mobs.KnightOfBodyConf;
-import me.zelevon.zbosses.tasks.knightofbody.BodyTaskManager;
+import me.zelevon.zbosses.tasks.bosses.BodyTaskManager;
 import org.bukkit.Location;
 
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
@@ -21,7 +21,6 @@ public class KnightOfBody extends AbstractWitherSkeleton {
         this.setLeggings(this.parseItem(mob.getLeggings()));
         this.setBoots(this.parseItem(mob.getBoots()));
         this.setWeapon(this.parseItem(mob.getWeapon()));
-//        new BodyTask(this).runTaskTimerAsynchronously(this.getPlugin(), 0, 100);
         new BodyTaskManager(this).runTaskTimer(this.getPlugin(), 0, 10);
     }
 

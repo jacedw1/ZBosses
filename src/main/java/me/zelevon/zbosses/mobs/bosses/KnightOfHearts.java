@@ -2,6 +2,7 @@ package me.zelevon.zbosses.mobs.bosses;
 
 import me.zelevon.zbosses.config.mobs.BossConf;
 import me.zelevon.zbosses.config.mobs.KnightOfHeartsConf;
+import me.zelevon.zbosses.tasks.bosses.HeartsTaskManager;
 import org.bukkit.Location;
 
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
@@ -20,6 +21,7 @@ public class KnightOfHearts extends AbstractWitherSkeleton {
         this.setLeggings(this.parseItem(mob.getLeggings()));
         this.setBoots(this.parseItem(mob.getBoots()));
         this.setWeapon(this.parseItem(mob.getWeapon()));
+        new HeartsTaskManager(this).runTaskTimer(this.getPlugin(), 0, 10);
     }
 
     @Override

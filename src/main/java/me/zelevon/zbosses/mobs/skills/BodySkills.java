@@ -31,6 +31,7 @@ public class BodySkills {
                 speed.setValue(speed.getValue() * (1.0F + (speedIncreasePercent / 100F)));
             }
         });
+        GeneralSkills.broadcastMessage(boss, "&fHow electric!", 15);
     }
 
     public static void blindPlayers(AbstractWitherSkeleton boss) {
@@ -42,6 +43,7 @@ public class BodySkills {
         for(Player player : players) {
             player.addPotionEffect(blindness);
         }
+        GeneralSkills.broadcastMessage(boss, "&fBlinding, isn't it?", 15);
     }
 
 }

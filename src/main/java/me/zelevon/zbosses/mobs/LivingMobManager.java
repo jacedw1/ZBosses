@@ -3,6 +3,7 @@ package me.zelevon.zbosses.mobs;
 import me.zelevon.zbosses.mobs.bosses.AbstractWitherSkeleton;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -12,7 +13,7 @@ import java.util.*;
 public class LivingMobManager {
 
     private List<AbstractWitherSkeleton> bosses;
-    private List<LivingEntity> minions;
+    private List<Entity> minions;
     private Map<AbstractWitherSkeleton, BidiMap<Player, Double>> damageTracker;
     private static LivingMobManager instance;
 
@@ -33,7 +34,7 @@ public class LivingMobManager {
         return bosses;
     }
 
-    public List<LivingEntity> getMinions() {
+    public List<Entity> getMinions() {
         return minions;
     }
 
@@ -42,7 +43,7 @@ public class LivingMobManager {
         this.damageTracker.put(boss, new DualHashBidiMap<>());
     }
 
-    public void addMinion(LivingEntity minion){
+    public void addMinion(Entity minion){
         this.minions.add(minion);
     }
 
@@ -55,7 +56,7 @@ public class LivingMobManager {
             }
         }
         if(!isBoss) {
-            for(LivingEntity mob : minions){
+            for(Entity mob : minions){
                 if(c.isInstance(mob)) {
                     return true;
                 }
@@ -69,7 +70,7 @@ public class LivingMobManager {
         this.damageTracker.remove(boss);
     }
 
-    public void removeMinion(LivingEntity minion){
+    public void removeMinion(Entity minion){
         this.minions.remove(minion);
     }
 
@@ -80,7 +81,7 @@ public class LivingMobManager {
                 result++;
             }
         }
-        for(LivingEntity minion : minions) {
+        for(Entity minion : minions) {
             if(c.isInstance(minion)){
                 result++;
             }
@@ -92,8 +93,10 @@ public class LivingMobManager {
         for(AbstractWitherSkeleton boss : bosses){
             boss.setHealth(0);
         }
-        for(LivingEntity minion : minions){
-            minion.setHealth(0);
+        for(Entity minion : minions){
+            if(minion instanceof LivingEntity) {
+                ((LivingEntity)minion).setHealth(0);
+            }
         }
     }
 

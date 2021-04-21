@@ -64,8 +64,9 @@ public class GodOfMindConf implements BossConf {
         return health;
     }
 
+    @Override
     public int getRandomBuffTimer() {
-        return randomBuffTimer;
+        return randomBuffTimer * 20;
     }
 
     public double getRandomBuffRadius() {

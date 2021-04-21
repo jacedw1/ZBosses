@@ -30,9 +30,8 @@ public class RandomBuffs {
     }
 
     public static void slownessBuff(AbstractWitherSkeleton boss) {
-        double r = boss.randomBuffRadius();
         PotionEffect slowness = PotionEffectType.SLOW.createEffect(200, 1);
-        List<Player> players = GeneralSkills.getNearbyPlayers(boss, r);
+        List<Player> players = GeneralSkills.getNearbyPlayers(boss, boss.randomBuffRadius());
         for(Player player : players) {
             player.addPotionEffect(slowness);
         }
@@ -40,9 +39,8 @@ public class RandomBuffs {
     }
 
     public static void miningFatigueBuff(AbstractWitherSkeleton boss) {
-        double r = boss.randomBuffRadius();
         PotionEffect miningFatigue = PotionEffectType.SLOW_DIGGING.createEffect(120, 2);
-        List<Player> players = GeneralSkills.getNearbyPlayers(boss, r);
+        List<Player> players = GeneralSkills.getNearbyPlayers(boss, boss.randomBuffRadius());
         for(Player player : players) {
             player.addPotionEffect(miningFatigue);
         }
@@ -50,8 +48,7 @@ public class RandomBuffs {
     }
 
     public static void knockbackPlayerBuff(AbstractWitherSkeleton boss) {
-        double r = boss.randomBuffRadius();
-        List<Player> players = GeneralSkills.getNearbyPlayers(boss, r);
+        List<Player> players = GeneralSkills.getNearbyPlayers(boss, boss.randomBuffRadius());
         for(Player player : players) {
                 Location bossLoc = boss.getBukkitEntity().getLocation();
                 Location playerLoc = player.getLocation();
@@ -90,7 +87,7 @@ public class RandomBuffs {
     }
 
     public static void fireballBuff(AbstractWitherSkeleton boss) {
-        List<Player> players = GeneralSkills.getNearbyPlayers(boss, 15);
+        List<Player> players = GeneralSkills.getNearbyPlayers(boss, boss.randomBuffRadius());
         if(players.size() == 0) {
             new RandomBuffTask(boss).run();
             return;
@@ -107,11 +104,11 @@ public class RandomBuffs {
     }
 
     public static void spawnZombieHoard(AbstractWitherSkeleton boss) {
-        spawnHoard(boss, false, 5, 6);
+        spawnHoard(boss, false, (int) boss.randomBuffRadius(), 6);
     }
 
     public static void spawnBabyZombieHoard(AbstractWitherSkeleton boss) {
-        spawnHoard(boss, true, 5, 4);
+        spawnHoard(boss, true, (int) boss.randomBuffRadius(), 4);
     }
 
     private static void spawnHoard(AbstractWitherSkeleton boss, boolean isBaby, int radius, int amount) {

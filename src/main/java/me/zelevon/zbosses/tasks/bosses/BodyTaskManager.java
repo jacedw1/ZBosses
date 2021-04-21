@@ -1,7 +1,7 @@
-package me.zelevon.zbosses.tasks.knightofbody;
+package me.zelevon.zbosses.tasks.bosses;
 
 import me.zelevon.zbosses.ZBosses;
-import me.zelevon.zbosses.mobs.LivingMobManager;
+import me.zelevon.zbosses.config.mobs.BossConf;
 import me.zelevon.zbosses.mobs.bosses.KnightOfBody;
 import me.zelevon.zbosses.mobs.skills.BodySkills;
 import me.zelevon.zbosses.tasks.RandomBuffTask;
@@ -11,13 +11,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 
-@SuppressWarnings({"FieldMayBeFinal", "UnnecessaryReturnStatement"})
+@SuppressWarnings({"FieldMayBeFinal", "UnnecessaryReturnStatement", "FieldCanBeLocal"})
 public class BodyTaskManager extends BukkitRunnable {
-
-    private LivingMobManager mobManager;
     private KnightOfBody boss;
     private ZBosses plugin;
     private BukkitScheduler scheduler;
+    private BossConf bossConf;
     private BukkitTask randomBuffTask;
     private BukkitTask lightningTask;
     private BukkitTask blindTask;
@@ -25,9 +24,9 @@ public class BodyTaskManager extends BukkitRunnable {
     public BodyTaskManager(KnightOfBody boss) {
         this.boss = boss;
         this.plugin = boss.getPlugin();
-        this.mobManager = plugin.getMobManager();
         this.scheduler = Bukkit.getScheduler();
-        this.randomBuffTask = new RandomBuffTask(this.boss).runTaskTimer(plugin, 0, 600);
+        this.bossConf = boss.getBossConf();
+        this.randomBuffTask = new RandomBuffTask(this.boss).runTaskTimer(plugin, 0, bossConf.getRandomBuffTimer());
     }
     @Override
     public void run() {
