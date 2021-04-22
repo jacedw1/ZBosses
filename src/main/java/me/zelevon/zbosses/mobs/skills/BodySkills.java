@@ -17,21 +17,19 @@ public class BodySkills {
         if(players.size() == 0) {
             return;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(ZBosses.getInstance(), () -> {
-            for(Player player : players) {
-                player.getWorld().strikeLightningEffect(player.getLocation());
-                double damage = 3.0D;
-                int speedIncreasePercent = 1;
-                if (player.isBlocking()) {
-                    damage = 1.0D;
-                    speedIncreasePercent = 0;
-                }
-                player.damage(damage);
-                AttributeInstance speed = boss.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
-                speed.setValue(speed.getValue() * (1.0F + (speedIncreasePercent / 100F)));
+        for (Player player : players) {
+            player.getWorld().strikeLightningEffect(player.getLocation());
+            double damage = 3.0D;
+            float speedIncreasePercent = 2.0F;
+            if (player.isBlocking()) {
+                damage = 1.0D;
+                speedIncreasePercent = 1.0F;
             }
-        });
-        GeneralSkills.broadcastMessage(boss, "&fHow electric!", 15);
+            player.damage(damage);
+            AttributeInstance speed = boss.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
+            speed.setValue(speed.getValue() * (1.0F + (speedIncreasePercent / 100F)));
+        }
+        GeneralSkills.broadcastMessage(boss, "&fHow electric!", 20);
     }
 
     public static void blindPlayers(AbstractWitherSkeleton boss) {

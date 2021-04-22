@@ -48,7 +48,7 @@ public class RandomBuffs {
     }
 
     public static void knockbackPlayerBuff(AbstractWitherSkeleton boss) {
-        List<Player> players = GeneralSkills.getNearbyPlayers(boss, boss.randomBuffRadius());
+        List<Player> players = GeneralSkills.getNearbyPlayers(boss, 5);
         for(Player player : players) {
                 Location bossLoc = boss.getBukkitEntity().getLocation();
                 Location playerLoc = player.getLocation();

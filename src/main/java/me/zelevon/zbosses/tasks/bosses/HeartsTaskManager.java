@@ -5,6 +5,7 @@ import me.zelevon.zbosses.config.mobs.BossConf;
 import me.zelevon.zbosses.config.mobs.KnightOfHeartsConf;
 import me.zelevon.zbosses.mobs.LivingMobManager;
 import me.zelevon.zbosses.mobs.bosses.KnightOfHearts;
+import me.zelevon.zbosses.mobs.skills.GeneralSkills;
 import me.zelevon.zbosses.mobs.skills.RandomBuffs;
 import me.zelevon.zbosses.tasks.RandomBuffTask;
 import org.bukkit.Bukkit;
@@ -15,7 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 
-@SuppressWarnings({"FieldMayBeFinal", "UnnecessaryReturnStatement", "FieldCanBeLocal"})
+@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 public class HeartsTaskManager extends BukkitRunnable {
 
     private KnightOfHearts boss;
@@ -25,7 +26,8 @@ public class HeartsTaskManager extends BukkitRunnable {
     private BossConf bossConf;
     private BukkitTask randomBuffTask;
     private BukkitTask knockbackTask;
-    private boolean half = false;
+    private boolean two = true;
+    private boolean cancel = true;
 
     public HeartsTaskManager(KnightOfHearts boss) {
         this.boss = boss;
@@ -47,18 +49,20 @@ public class HeartsTaskManager extends BukkitRunnable {
             this.cancel();
             return;
         }
-        if(health <= .5F * maxHealth && !half) {
-            half = true;
+        if(two && health <= .5F * maxHealth) {
+            two = false;
+            GeneralSkills.broadcastMessage(boss, "My crystals will be your demise! (Phase 2)", 20);
             Location bossLoc = boss.getBukkitEntity().getLocation();
             EnderCrystal crystal1 = (EnderCrystal) bossLoc.getWorld().spawnEntity(bossLoc.add(10, 5, 10), EntityType.ENDER_CRYSTAL);
             EnderCrystal crystal2 = (EnderCrystal) bossLoc.getWorld().spawnEntity(bossLoc.add(-10, 5, -10), EntityType.ENDER_CRYSTAL);
             mobManager.addMinion(crystal1);
             mobManager.addMinion(crystal2);
             long kbt = ((KnightOfHeartsConf)bossConf).getKnockbackTimer();
-            this.knockbackTask = scheduler.runTaskTimer(plugin, () -> RandomBuffs.knockbackPlayerBuff(this.boss), kbt, kbt);
+            this.knockbackTask = scheduler.runTaskTimerAsynchronously(plugin, () -> RandomBuffs.knockbackPlayerBuff(this.boss), kbt, kbt);
             return;
         }
-        if(half && !mobManager.isAlive(EnderCrystal.class, false)) {
+        if(cancel && !two && !mobManager.isAlive(EnderCrystal.class, false)) {
+            cancel = false;
             this.knockbackTask.cancel();
         }
     }

@@ -17,6 +17,8 @@ public class SoulsTaskManager extends BukkitRunnable {
     private BukkitScheduler scheduler;
     private BossConf bossConf;
     private BukkitTask randomBuffTask;
+    private boolean two = true;
+    private boolean three = true;
 
     public SoulsTaskManager(KnightOfSouls boss) {
         this.boss = boss;
@@ -36,13 +38,12 @@ public class SoulsTaskManager extends BukkitRunnable {
             this.cancel();
             return;
         }
-        if(health <= .25F * maxHealth) {
+        if(health <= .25F * maxHealth && three) {
+            three = false;
             return;
         }
-        if(health <= .5F * maxHealth) {
-            return;
-        }
-        if(health <= .75F * maxHealth) {
+        if(health <= .75F * maxHealth && two) {
+            two = false;
             return;
         }
     }

@@ -52,7 +52,7 @@ public class EntityDeathListener implements Listener {
                 }
             }
         }
-        message += "&fHighest Damage: &b" + name;
+        message += "      &fHighest Damage: &b" + name;
         players.remove(0);
         if(!(players.size() > 0)) {
             Bukkit.broadcastMessage(messageSender.colorize(message));
@@ -73,7 +73,7 @@ public class EntityDeathListener implements Listener {
                 }
             }
         }
-        message += "&fSecond Highest Damage: &b" + name;
+        message += "      &fSecond Highest Damage: &b" + name;
         players.remove(0);
         if(!(players.size() > 0)) {
             Bukkit.broadcastMessage(messageSender.colorize(message));
@@ -94,7 +94,7 @@ public class EntityDeathListener implements Listener {
                 }
             }
         }
-        Bukkit.broadcastMessage(messageSender.colorize(message + "&fThird Highest Damage: &b" + name));
+        Bukkit.broadcastMessage(messageSender.colorize(message + "      &fThird Highest Damage: &b" + name));
 
     }
 }

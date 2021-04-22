@@ -26,6 +26,7 @@ public abstract class AbstractWitherSkeleton extends EntitySkeleton {
     private double baseSpeed;
     private boolean canLifeSteal = false;
     private float lifeStealPercent = 0.1F;
+    private double damageMod = 1.0D;
 
     public AbstractWitherSkeleton(Location location) {
         super(((CraftWorld)location.getWorld()).getHandle());
@@ -119,5 +120,13 @@ public abstract class AbstractWitherSkeleton extends EntitySkeleton {
 
     public void resetSpeed() {
         this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(baseSpeed);
+    }
+
+    public double getDamageMod() {
+        return damageMod;
+    }
+
+    public void setDamageMod(double damageMod) {
+        this.damageMod = damageMod;
     }
 }
