@@ -83,6 +83,10 @@ public abstract class AbstractWitherSkeleton extends EntitySkeleton {
         return messageSender;
     }
 
+    public LivingMobManager getMobManager() {
+        return mobManager;
+    }
+
     public Config.MobsConf getConf() {
         return conf;
     }

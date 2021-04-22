@@ -4,6 +4,7 @@ import me.zelevon.zbosses.ZBosses;
 import me.zelevon.zbosses.mobs.bosses.AbstractWitherSkeleton;
 import me.zelevon.zbosses.tasks.FireballTask;
 import me.zelevon.zbosses.tasks.RandomBuffTask;
+import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
 import net.minecraft.server.v1_8_R3.MobEffect;
 import org.bukkit.Bukkit;
@@ -86,14 +87,16 @@ public class RandomBuffs {
         GeneralSkills.broadcastMessage(boss, "I'm going to absorb your soul...", 20);
     }
 
-    public static void fireballBuff(AbstractWitherSkeleton boss) {
+    public static void fireballBuff(AbstractWitherSkeleton boss, int fireballAmount) {
+        AttributeInstance speed = boss.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
+        speed.setValue(0);
+        Bukkit.getScheduler().runTaskLater(boss.getPlugin(), boss::resetSpeed, fireballAmount * 10L);
         List<Player> players = GeneralSkills.getNearbyPlayers(boss, boss.randomBuffRadius());
         if(players.size() == 0) {
             new RandomBuffTask(boss).run();
             return;
         }
-        int fireballAmount = 3;
-        long delay = 0;
+        long delay = 10;
         Random rand = new Random();
         for(int i = 0; i < fireballAmount; i++) {
             Player player = players.get(rand.nextInt(players.size()));

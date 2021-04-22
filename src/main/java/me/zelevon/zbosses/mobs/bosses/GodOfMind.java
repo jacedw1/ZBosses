@@ -2,10 +2,14 @@ package me.zelevon.zbosses.mobs.bosses;
 
 import me.zelevon.zbosses.config.mobs.BossConf;
 import me.zelevon.zbosses.config.mobs.GodOfMindConf;
+import me.zelevon.zbosses.mobs.minions.MindGuard;
 import me.zelevon.zbosses.tasks.bosses.MindTaskManager;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 public class GodOfMind extends AbstractWitherSkeleton {
@@ -16,6 +20,8 @@ public class GodOfMind extends AbstractWitherSkeleton {
     private boolean dot = true;
     private boolean axePhase = false;
     private boolean invuln = false;
+    private MindGuard guard1 = null;
+    private MindGuard guard2 = null;
     private PathfinderGoal goal = new PathfinderGoalArrowAttack(this, 1.0D, 40, 80, 15.0F);
 
     public GodOfMind(Location location) {
@@ -84,5 +90,18 @@ public class GodOfMind extends AbstractWitherSkeleton {
 
     public boolean isInvuln() {
         return invuln;
+    }
+
+    public void spawnGuards() {
+        this.guard1 = new MindGuard(this);
+        this.guard2 = new MindGuard(this);
+    }
+
+    public boolean guardIsAlive() {
+        if(guard1 == null || guard2 == null) {
+            return false;
+        }
+        List<Entity> minions = this.getMobManager().getMinions();
+        return minions.contains(guard1.getBukkitEntity()) || minions.contains(guard2.getBukkitEntity());
     }
 }

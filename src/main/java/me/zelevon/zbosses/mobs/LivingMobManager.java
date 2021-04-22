@@ -3,6 +3,8 @@ package me.zelevon.zbosses.mobs;
 import me.zelevon.zbosses.mobs.bosses.AbstractWitherSkeleton;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -56,8 +58,8 @@ public class LivingMobManager {
             }
         }
         if(!isBoss) {
-            for(Entity mob : minions){
-                if(c.isInstance(mob)) {
+            for(Entity minion : minions){
+                if(c.isInstance(minion) || c.isInstance(((CraftEntity)minion).getHandle())) {
                     return true;
                 }
             }
@@ -82,7 +84,7 @@ public class LivingMobManager {
             }
         }
         for(Entity minion : minions) {
-            if(c.isInstance(minion)){
+            if(c.isInstance(minion) || c.isInstance(((CraftEntity)minion).getHandle())) {
                 result++;
             }
         }
@@ -91,12 +93,10 @@ public class LivingMobManager {
 
     public void killAllMobs() {
         for(AbstractWitherSkeleton boss : bosses){
-            boss.setHealth(0);
+            boss.getBukkitEntity().remove();
         }
         for(Entity minion : minions){
-            if(minion instanceof LivingEntity) {
-                ((LivingEntity)minion).setHealth(0);
-            }
+            minion.remove();
         }
     }
 

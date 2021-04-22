@@ -5,6 +5,7 @@ import me.zelevon.zbosses.mobs.LivingMobManager;
 import me.zelevon.zbosses.mobs.bosses.AbstractWitherSkeleton;
 import me.zelevon.zbosses.mobs.bosses.GodOfMind;
 import me.zelevon.zbosses.mobs.bosses.KnightOfHearts;
+import me.zelevon.zbosses.mobs.bosses.KnightOfSouls;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
 import org.bukkit.Bukkit;
@@ -35,9 +36,12 @@ public class EntityDamageListener implements Listener {
     }
 
     @EventHandler
-    public void onLifestealAttack(EntityDamageByEntityEvent e) {
+    public void onBossAttack(EntityDamageByEntityEvent e) {
         Entity damager = ((CraftEntity) e.getDamager()).getHandle();
-        LivingEntity player = ((LivingEntity)e.getEntity());
+        if(!(e.getEntity() instanceof Player)) {
+            return;
+        }
+        Player player = ((Player)e.getEntity());
         if (!(damager instanceof AbstractWitherSkeleton)) {
             return;
         }
@@ -71,35 +75,45 @@ public class EntityDamageListener implements Listener {
     }
 
     @EventHandler
-    public void onDamage(EntityDamageByEntityEvent e) {
-        if(!(e.getDamager() instanceof Player)) {
-            return;
-        }
-        Player player = (Player) e.getDamager();
+    public void onDamageBoss(EntityDamageByEntityEvent e) {
         Entity entity = ((CraftEntity) e.getEntity()).getHandle();
         if (!(entity instanceof AbstractWitherSkeleton)) {
             return;
         }
         AbstractWitherSkeleton boss = (AbstractWitherSkeleton) entity;
         if(boss instanceof KnightOfHearts) {
-            if(mobManager.isAlive(EnderCrystal.class, false)) {
-                player.damage(e.getFinalDamage());
+            if(((KnightOfHearts) boss).crystalIsAlive()) {
+                if(e.getDamager() instanceof Player) {
+                    ((Player)e.getDamager()).damage(e.getFinalDamage());
+                }
                 e.setCancelled(true);
                 return;
             }
         }
+        if(boss instanceof KnightOfSouls) {
+            e.setDamage(e.getDamage() * ((KnightOfSouls) boss).getDamagePercent());
+        }
         if(boss instanceof GodOfMind) {
-            if(((GodOfMind)boss).isInvuln()) {
+            GodOfMind mind = ((GodOfMind)boss);
+            if(mind.isInvuln()) {
                 e.setCancelled(true);
+                return;
             }
-            if(((GodOfMind)boss).isAxePhase()) {
+            if(mind.guardIsAlive()) {
+                e.setCancelled(true);
+                return;
+            }
+            if(mind.isAxePhase()) {
                 e.setDamage(e.getDamage() * boss.getDamageMod());
                 AttributeInstance speed = boss.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
                 speed.setValue(speed.getValue() * (1.02F));
                 boss.setDamageMod(boss.getDamageMod() - 0.01D);
             }
         }
-        this.mobManager.addDamage(boss, player, e.getFinalDamage());
+        if(!(e.getDamager() instanceof Player)) {
+            return;
+        }
+        this.mobManager.addDamage(boss, (Player)e.getDamager(), e.getFinalDamage());
     }
 
     @EventHandler

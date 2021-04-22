@@ -2,8 +2,9 @@ package me.zelevon.zbosses.listeners;
 
 import me.zelevon.zbosses.ZBosses;
 import me.zelevon.zbosses.config.Droptable;
-import me.zelevon.zbosses.mobs.LivingMobManager;
 import me.zelevon.zbosses.mobs.bosses.*;
+import me.zelevon.zbosses.mobs.minions.MindGuard;
+import me.zelevon.zbosses.mobs.minions.SoulMinion;
 import me.zelevon.zbosses.utils.MessageSender;
 import net.minecraft.server.v1_8_R3.Entity;
 import org.bukkit.Bukkit;
@@ -26,8 +27,9 @@ public class EntityDeathListener implements Listener {
         this.plugin = ZBosses.getInstance();
         this.messageSender = plugin.getMessageSender();
     }
+
     @EventHandler
-    public void onEntityDeath(EntityDeathEvent e) {
+    public void onBossDeath(EntityDeathEvent e) {
         Entity entity = ((CraftEntity) e.getEntity()).getHandle();
         if (!(entity instanceof AbstractWitherSkeleton)) {
             return;
@@ -35,7 +37,7 @@ public class EntityDeathListener implements Listener {
         e.getDrops().clear();
         AbstractWitherSkeleton boss = (AbstractWitherSkeleton) entity;
         Droptable droptable = boss.getBossConf().getDrops();
-        List<Player> players = LivingMobManager.get().getTopThreePlayers(boss);
+        List<Player> players = boss.getMobManager().getTopThreePlayers(boss);
         String message = plugin.getPrefix() + "&n" + boss.getName() + " &fSlain\n";
         Random rand = new Random();
         int rewardNum = rand.nextInt(droptable.getFirstMax() - droptable.getFirstMin() + 1) + droptable.getFirstMin();
@@ -56,6 +58,7 @@ public class EntityDeathListener implements Listener {
         players.remove(0);
         if(!(players.size() > 0)) {
             Bukkit.broadcastMessage(messageSender.colorize(message));
+            boss.getMobManager().removeBoss(boss);
             return;
         }
         message += '\n';
@@ -77,6 +80,7 @@ public class EntityDeathListener implements Listener {
         players.remove(0);
         if(!(players.size() > 0)) {
             Bukkit.broadcastMessage(messageSender.colorize(message));
+            boss.getMobManager().removeBoss(boss);
             return;
         }
         message += '\n';
@@ -94,7 +98,31 @@ public class EntityDeathListener implements Listener {
                 }
             }
         }
+        boss.getMobManager().removeBoss(boss);
         Bukkit.broadcastMessage(messageSender.colorize(message + "      &fThird Highest Damage: &b" + name));
 
+    }
+
+    @EventHandler
+    public void onMindGuardDeath(EntityDeathEvent e) {
+        Entity entity = ((CraftEntity) e.getEntity()).getHandle();
+        if (!(entity instanceof MindGuard)) {
+            return;
+        }
+        e.getDrops().clear();
+        ((MindGuard)entity).getMobManager().removeMinion(entity.getBukkitEntity());
+    }
+
+    @EventHandler
+    public void onSoulMinionDeath(EntityDeathEvent e) {
+        Entity entity = ((CraftEntity) e.getEntity()).getHandle();
+        if (!(entity instanceof SoulMinion)) {
+            return;
+        }
+        e.getDrops().clear();
+        SoulMinion minion = (SoulMinion) entity;
+        KnightOfSouls souls = minion.getBoss();
+        minion.getMobManager().removeMinion(entity.getBukkitEntity());
+        souls.setDamagePercent(souls.getDamagePercent() + 0.2);
     }
 }

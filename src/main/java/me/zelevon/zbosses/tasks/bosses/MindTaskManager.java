@@ -3,6 +3,7 @@ package me.zelevon.zbosses.tasks.bosses;
 import me.zelevon.zbosses.ZBosses;
 import me.zelevon.zbosses.config.mobs.BossConf;
 import me.zelevon.zbosses.mobs.bosses.GodOfMind;
+import me.zelevon.zbosses.mobs.minions.MindGuard;
 import me.zelevon.zbosses.mobs.skills.GeneralSkills;
 import me.zelevon.zbosses.mobs.skills.RandomBuffs;
 import me.zelevon.zbosses.tasks.RandomBuffTask;
@@ -57,7 +58,8 @@ public class MindTaskManager extends BukkitRunnable {
             boss.addEffect(new MobEffect(1, 100000, 2));
             boss.setCanLifeSteal(true);
             boss.setLifeStealPercent(0.25F);
-            GeneralSkills.broadcastMessage(boss, "I will scythe you to pieces! (Phase 4)", 20);
+            boss.spawnGuards();
+            GeneralSkills.broadcastMessage(boss, "Guards! Protect me! (Phase 4)", 20);
             return;
         }
         if(three && health <= .5F * maxHealth) {

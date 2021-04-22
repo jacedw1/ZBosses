@@ -57,6 +57,8 @@ public class HeartsTaskManager extends BukkitRunnable {
             EnderCrystal crystal2 = (EnderCrystal) bossLoc.getWorld().spawnEntity(bossLoc.add(-10, 5, -10), EntityType.ENDER_CRYSTAL);
             mobManager.addMinion(crystal1);
             mobManager.addMinion(crystal2);
+            boss.setCrystal1(crystal1);
+            boss.setCrystal2(crystal2);
             long kbt = ((KnightOfHeartsConf)bossConf).getKnockbackTimer();
             this.knockbackTask = scheduler.runTaskTimerAsynchronously(plugin, () -> RandomBuffs.knockbackPlayerBuff(this.boss), kbt, kbt);
             return;

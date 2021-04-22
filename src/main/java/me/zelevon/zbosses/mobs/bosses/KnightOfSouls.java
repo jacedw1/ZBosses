@@ -2,13 +2,20 @@ package me.zelevon.zbosses.mobs.bosses;
 
 import me.zelevon.zbosses.config.mobs.BossConf;
 import me.zelevon.zbosses.config.mobs.KnightOfSoulsConf;
+import me.zelevon.zbosses.mobs.minions.SoulMinion;
+import me.zelevon.zbosses.tasks.bosses.SoulsTaskManager;
 import org.bukkit.Location;
 
-@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
+@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal", "unused"})
 public class KnightOfSouls extends AbstractWitherSkeleton {
 
     private KnightOfSoulsConf mob;
     private String name = "&5&lKnight of Souls";
+    private double damagePercent = 1.0;
+    private SoulMinion minion1 = null;
+    private SoulMinion minion2 = null;
+    private SoulMinion minion3 = null;
+    private SoulMinion minion4 = null;
 
     public KnightOfSouls(Location location){
         super(location);
@@ -20,6 +27,7 @@ public class KnightOfSouls extends AbstractWitherSkeleton {
         this.setLeggings(this.parseItem(mob.getLeggings()));
         this.setBoots(this.parseItem(mob.getBoots()));
         this.setWeapon(this.parseItem(mob.getWeapon()));
+        new SoulsTaskManager(this).runTaskTimer(this.getPlugin(), 0, 10);
     }
 
     @Override
@@ -35,5 +43,21 @@ public class KnightOfSouls extends AbstractWitherSkeleton {
     @Override
     public BossConf getBossConf() {
         return this.mob;
+    }
+
+    public double getDamagePercent() {
+        return damagePercent;
+    }
+
+    public void setDamagePercent(double damagePercent) {
+        this.damagePercent = damagePercent;
+    }
+
+    public void spawnMinions() {
+        this.minion1 = new SoulMinion(this);
+        this.minion2 = new SoulMinion(this);
+        this.minion3 = new SoulMinion(this);
+        this.minion4 = new SoulMinion(this);
+        this.setDamagePercent(this.getDamagePercent() - 0.8);
     }
 }

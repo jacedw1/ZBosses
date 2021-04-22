@@ -53,10 +53,10 @@ public class RandomBuffTask extends BukkitRunnable {
                 RandomBuffs.strengthBuff(boss);
                 break;
             case 8:
-                scheduler.runTaskAsynchronously(plugin, () -> RandomBuffs.lifeStealBuff(boss));
+                RandomBuffs.lifeStealBuff(boss);
                 break;
             case 9:
-                RandomBuffs.fireballBuff(boss);
+                RandomBuffs.fireballBuff(boss, 3);
                 break;
             default:
                 break;

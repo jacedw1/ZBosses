@@ -8,12 +8,17 @@ import me.zelevon.zbosses.items.ItemManager;
 import me.zelevon.zbosses.listeners.BossEggListener;
 import me.zelevon.zbosses.listeners.EntityDamageListener;
 import me.zelevon.zbosses.listeners.EntityDeathListener;
+import me.zelevon.zbosses.listeners.EntityTargetListener;
 import me.zelevon.zbosses.mobs.LivingMobManager;
 import me.zelevon.zbosses.mobs.bosses.*;
+import me.zelevon.zbosses.mobs.minions.MindGuard;
+import me.zelevon.zbosses.mobs.minions.SoulMinion;
 import me.zelevon.zbosses.tasks.NameTask;
 import me.zelevon.zbosses.utils.MessageSender;
 import me.zelevon.zbosses.utils.NMSUtils;
+import net.minecraft.server.v1_8_R3.EntityIronGolem;
 import net.minecraft.server.v1_8_R3.EntitySkeleton;
+import net.minecraft.server.v1_8_R3.EntityZombie;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -42,10 +47,13 @@ public final class ZBosses extends JavaPlugin {
         NMSUtils.registerEntity("Knight_of_Hearts", 51, EntitySkeleton.class, KnightOfHearts.class);
         NMSUtils.registerEntity("Knight_of_Souls", 51, EntitySkeleton.class, KnightOfSouls.class);
         NMSUtils.registerEntity("God_of_Mind", 51, EntitySkeleton.class, GodOfMind.class);
+        NMSUtils.registerEntity("Mind_Guard", 99, EntityIronGolem.class, MindGuard.class);
+        NMSUtils.registerEntity("Soul_Minion", 54, EntityZombie.class, SoulMinion.class);
 
         this.getServer().getPluginManager().registerEvents(new BossEggListener(), this);
         this.getServer().getPluginManager().registerEvents(new EntityDamageListener(), this);
         this.getServer().getPluginManager().registerEvents(new EntityDeathListener(), this);
+        this.getServer().getPluginManager().registerEvents(new EntityTargetListener(), this);
 
         this.commandManager = new PaperCommandManager(this);
         this.commandManager.getCommandCompletions().registerCompletion("custommobs", c -> ImmutableList.of("Knight_of_Souls", "Knight_of_Hearts", "Knight_of_Body", "God_of_Mind"));

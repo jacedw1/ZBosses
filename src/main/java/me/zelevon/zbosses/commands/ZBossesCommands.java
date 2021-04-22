@@ -10,6 +10,8 @@ import me.zelevon.zbosses.items.BossEgg;
 import me.zelevon.zbosses.items.ItemManager;
 import me.zelevon.zbosses.mobs.LivingMobManager;
 import me.zelevon.zbosses.mobs.bosses.*;
+import me.zelevon.zbosses.mobs.minions.MindGuard;
+import me.zelevon.zbosses.mobs.minions.SoulMinion;
 import me.zelevon.zbosses.utils.MessageSender;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -47,22 +49,31 @@ public class ZBossesCommands extends BaseCommand {
         }
         String message = "";
         if(!(mobManager.getBosses().size() == 0)) {
-            message += prefix + "&l&nBosses Alive" + '\n';
+            message += prefix + "&l&nBosses Alive&f " + '\n' + " ";
             if (mobManager.isAlive(KnightOfBody.class, true)) {
-                message += "    &c&lKnight of Body: " + mobManager.getAmountAlive(KnightOfBody.class) + '\n';
+                message += "     &c&lKnight of Body: " + mobManager.getAmountAlive(KnightOfBody.class) + '\n';
             }
             if (mobManager.isAlive(KnightOfHearts.class, true)) {
-                message += "    &d&lKnight of Hearts: " + mobManager.getAmountAlive(KnightOfHearts.class) + '\n';
+                message += "     &d&lKnight of Hearts: " + mobManager.getAmountAlive(KnightOfHearts.class) + '\n';
             }
             if (mobManager.isAlive(KnightOfSouls.class, true)) {
-                message += "    &5&lKnight of Souls: " + mobManager.getAmountAlive(KnightOfSouls.class) + '\n';
+                message += "     &5&lKnight of Souls: " + mobManager.getAmountAlive(KnightOfSouls.class) + '\n';
             }
             if (mobManager.isAlive(GodOfMind.class, true)) {
-                message += "    &6&lGod of Mind: " + mobManager.getAmountAlive(GodOfMind.class) + '\n';
+                message += "     &6&lGod of Mind: " + mobManager.getAmountAlive(GodOfMind.class) + '\n';
             }
         }
         if(!(mobManager.getMinions().size() == 0)) {
-            message += prefix + "&l&nMinions Alive" + '\n';
+            message += prefix + "&l&nMinions Alive&f" + '\n';
+        }
+        if (mobManager.isAlive(EnderCrystal.class, false)) {
+            message += "      &dHeart Crystal: " + mobManager.getAmountAlive(EnderCrystal.class) + '\n';
+        }
+        if (mobManager.isAlive(MindGuard.class, false)) {
+            message += "      &6Mind Guard: " + mobManager.getAmountAlive(MindGuard.class) + '\n';
+        }
+        if (mobManager.isAlive(SoulMinion.class, false)) {
+            message += "      &5Soul Minion: " + mobManager.getAmountAlive(SoulMinion.class) + '\n';
         }
 
         messageSender.msg(sender, message);
