@@ -17,7 +17,8 @@ public class Config {
 
     public static MobsConf setup(){
         try {
-            File directory = new File("plugins\\Z-Bosses");
+            File plugins = new File("plugins");
+            File directory = new File(plugins,"Z-Bosses");
             if (!directory.exists()) {
                 directory.mkdir();
             }

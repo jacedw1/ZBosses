@@ -1,10 +1,7 @@
 package me.zelevon.zbosses.commands;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.*;
 import me.zelevon.zbosses.ZBosses;
 import me.zelevon.zbosses.items.BossEgg;
 import me.zelevon.zbosses.items.ItemManager;
@@ -33,6 +30,18 @@ public class ZBossesCommands extends BaseCommand {
         this.mobManager = plugin.getMobManager();
         this.itemManager = plugin.getItemManager();
         this.prefix = plugin.getPrefix();
+    }
+
+    @Default
+    @Subcommand("help")
+    public void onDefault(CommandSender sender) {
+        String message = prefix + "&bCommand Help" + '\n'
+                + "&c/zb spawn &b<boss> &3<optional:delay> &e- spawn &b<boss>&e with an optional &3delay." + '\n'
+                + "&c/zb get &b<boss> &e- get a spawn egg for &b<boss>&e to place down and spawn" + '\n'
+                + "&c/zb list &e- get a list of possible &bbosses&e to use in &b<boss>" + '\n'
+                + "&c/zb living &e- get a list of currently living &bbosses&e and &aminions" + '\n'
+                + "&c/zb help &e- bring up this help page";
+        messageSender.msg(sender, message);
     }
 
     @Subcommand("list")
