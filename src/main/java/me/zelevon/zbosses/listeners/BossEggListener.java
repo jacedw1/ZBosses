@@ -62,19 +62,19 @@ public class BossEggListener implements Listener {
         ItemMeta meta = item.getItemMeta();
         String message = plugin.getPrefix();
         if(meta.equals(itemManager.getBodyEgg().getItemMeta())) {
-            new KnightOfBody(loc).spawn();
+            new KnightOfBody(loc, false).spawn();
             message += "You have successfully spawned a &c&lKnight of Body&f.";
         }
         if(meta.equals(itemManager.getHeartsEgg().getItemMeta())) {
-            new KnightOfHearts(loc).spawn();
+            new KnightOfHearts(loc, false).spawn();
             message += "You have successfully spawned a &d&lKnight of Hearts&f.";
         }
         if(meta.equals(itemManager.getSoulsEgg().getItemMeta())) {
-            new KnightOfSouls(loc).spawn();
+            new KnightOfSouls(loc, false).spawn();
             message += "You have successfully spawned a &5&lKnight of Souls&f.";
         }
         if(meta.equals(itemManager.getMindEgg().getItemMeta())) {
-            new GodOfMind(loc).spawn();
+            new GodOfMind(loc, false).spawn();
             message += "You have successfully spawned a &6&lGod of Mind&f.";
         }
         messageSender.msg(player, message);

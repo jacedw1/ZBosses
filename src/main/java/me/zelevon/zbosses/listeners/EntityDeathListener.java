@@ -36,7 +36,7 @@ public class EntityDeathListener implements Listener {
         }
         e.getDrops().clear();
         AbstractWitherSkeleton boss = (AbstractWitherSkeleton) entity;
-        Droptable droptable = boss.getBossConf().getDrops();
+        Droptable droptable = boss.isDelayMob() ?  boss.getBossConf().getDelayDrops() : boss.getBossConf().getNormalDrops();
         List<Player> players = boss.getMobManager().getTopThreePlayers(boss);
         String message = plugin.getPrefix() + "&n" + boss.getName() + " &fSlain\n";
         Random rand = new Random();

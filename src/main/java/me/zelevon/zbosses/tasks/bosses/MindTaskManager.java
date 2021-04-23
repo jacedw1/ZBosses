@@ -3,7 +3,6 @@ package me.zelevon.zbosses.tasks.bosses;
 import me.zelevon.zbosses.ZBosses;
 import me.zelevon.zbosses.config.mobs.BossConf;
 import me.zelevon.zbosses.mobs.bosses.GodOfMind;
-import me.zelevon.zbosses.mobs.minions.MindGuard;
 import me.zelevon.zbosses.mobs.skills.GeneralSkills;
 import me.zelevon.zbosses.mobs.skills.RandomBuffs;
 import me.zelevon.zbosses.tasks.RandomBuffTask;
@@ -57,7 +56,7 @@ public class MindTaskManager extends BukkitRunnable {
             boss.resetPathfinder();
             boss.addEffect(new MobEffect(1, 100000, 2));
             boss.setCanLifeSteal(true);
-            boss.setLifeStealPercent(0.25F);
+            boss.setLifeStealPercent(0.15F);
             boss.spawnGuards();
             GeneralSkills.broadcastMessage(boss, "Guards! Protect me! (Phase 4)", 20);
             return;
@@ -70,9 +69,7 @@ public class MindTaskManager extends BukkitRunnable {
             RandomBuffs.knockbackPlayerBuff(boss);
             AttributeInstance speed = boss.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
             speed.setValue(0);
-            GeneralSkills.broadcastMessage(boss, "3", 20);
-            scheduler.runTaskLaterAsynchronously(plugin, () -> GeneralSkills.broadcastMessage(boss, "2", 20), 20);
-            scheduler.runTaskLaterAsynchronously(plugin, () -> GeneralSkills.broadcastMessage(boss, "1", 20), 40);
+            GeneralSkills.bossCountdown(boss);
             scheduler.runTaskLaterAsynchronously(plugin, () -> {
                 boss.setWeapon(new ItemStack(Items.BOW));
                 boss.startBowAttacks();
@@ -80,7 +77,7 @@ public class MindTaskManager extends BukkitRunnable {
                 boss.setInvuln(false);
                 GeneralSkills.broadcastMessage(boss, "Apollo blesses me! (Phase 3)", 20);
             }, 60);
-            this.lightningTask = scheduler.runTaskTimerAsynchronously(plugin, () -> lightningStrike(boss.getLastTarget()), 500, 500);
+            this.lightningTask = scheduler.runTaskTimerAsynchronously(plugin, () -> lightningStrike(boss.getLastTarget()), 260, 200);
             return;
         }
         if(two && health <= .75F * maxHealth) {
@@ -105,12 +102,15 @@ public class MindTaskManager extends BukkitRunnable {
         if(target == null) {
             return;
         }
-        target.getWorld().strikeLightningEffect(target.getLocation());
-        double damage = 8.0D;
-        if (target.isBlocking()) {
-            damage = 2.0D;
-        }
-        target.damage(damage);
-        GeneralSkills.broadcastMessage(boss, "&fHow electric!", 20);
+        GeneralSkills.bossCountdown(boss);
+        scheduler.runTaskLater(plugin, () -> {
+            target.getWorld().strikeLightningEffect(target.getLocation());
+            double damage = 8.0D;
+            if (target.isBlocking()) {
+                damage /= 4.0D;
+            }
+            target.damage(damage);
+            GeneralSkills.broadcastMessage(boss, "&fHow electric!", 20);
+        }, 60L);
     }
 }

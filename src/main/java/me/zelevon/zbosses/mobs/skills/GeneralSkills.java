@@ -1,8 +1,11 @@
 package me.zelevon.zbosses.mobs.skills;
 
+import me.zelevon.zbosses.ZBosses;
 import me.zelevon.zbosses.mobs.bosses.AbstractWitherSkeleton;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,5 +29,13 @@ public class GeneralSkills {
             }
         }
         return players;
+    }
+
+    public static void bossCountdown(AbstractWitherSkeleton boss) {
+        BukkitScheduler scheduler = Bukkit.getScheduler();
+        ZBosses plugin = boss.getPlugin();
+        GeneralSkills.broadcastMessage(boss, "3", 20);
+        scheduler.runTaskLater(plugin, () -> GeneralSkills.broadcastMessage(boss, "2", 20), 20);
+        scheduler.runTaskLater(plugin, () -> GeneralSkills.broadcastMessage(boss, "1", 20), 40);
     }
 }

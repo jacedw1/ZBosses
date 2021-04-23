@@ -9,7 +9,10 @@ import org.spongepowered.configurate.objectmapping.meta.Setting;
 public class GodOfMindConf implements BossConf {
 
     @Setting
-    private Droptable drops;
+    private Droptable dropsNormal;
+
+    @Setting
+    private Droptable dropsDelay;
 
     @Setting
     private String helmet = "DIAMOND_HELMET";
@@ -24,7 +27,7 @@ public class GodOfMindConf implements BossConf {
     private String boots = "DIAMOND_BOOTS";
 
     @Setting
-    private String weapon = "AIR";
+    private String weapon = "DIAMOND_SWORD";
 
     @Setting
     private int health = 100;
@@ -36,8 +39,13 @@ public class GodOfMindConf implements BossConf {
     private double randomBuffRadius = 5.0;
 
     @Override
-    public Droptable getDrops() {
-        return drops;
+    public Droptable getNormalDrops() {
+        return dropsNormal;
+    }
+
+    @Override
+    public Droptable getDelayDrops() {
+        return dropsDelay;
     }
 
     public String getHelmet() {

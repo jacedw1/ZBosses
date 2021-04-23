@@ -9,7 +9,10 @@ import org.spongepowered.configurate.objectmapping.meta.Setting;
 public class KnightOfHeartsConf implements BossConf {
 
     @Setting
-    private Droptable drops;
+    private Droptable dropsNormal;
+
+    @Setting
+    private Droptable dropsDelay;
 
     @Setting
     private String helmet = "DIAMOND_HELMET";
@@ -39,8 +42,13 @@ public class KnightOfHeartsConf implements BossConf {
     private int knockbackTimer = 5;
 
     @Override
-    public Droptable getDrops() {
-        return drops;
+    public Droptable getNormalDrops() {
+        return dropsNormal;
+    }
+
+    @Override
+    public Droptable getDelayDrops() {
+        return dropsDelay;
     }
 
     public String getHelmet() {

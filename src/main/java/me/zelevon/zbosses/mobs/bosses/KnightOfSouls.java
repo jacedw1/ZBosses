@@ -3,6 +3,7 @@ package me.zelevon.zbosses.mobs.bosses;
 import me.zelevon.zbosses.config.mobs.BossConf;
 import me.zelevon.zbosses.config.mobs.KnightOfSoulsConf;
 import me.zelevon.zbosses.mobs.minions.SoulMinion;
+import me.zelevon.zbosses.tasks.bosses.MindTaskManager;
 import me.zelevon.zbosses.tasks.bosses.SoulsTaskManager;
 import org.bukkit.Location;
 
@@ -17,8 +18,8 @@ public class KnightOfSouls extends AbstractWitherSkeleton {
     private SoulMinion minion3 = null;
     private SoulMinion minion4 = null;
 
-    public KnightOfSouls(Location location){
-        super(location);
+    public KnightOfSouls(Location location, boolean delayMob) {
+        super(location, delayMob);
         this.mob = this.getConf().getKnightOfSouls();
         this.setCustomHealth(mob.getHealth());
         this.updateName();
@@ -27,7 +28,6 @@ public class KnightOfSouls extends AbstractWitherSkeleton {
         this.setLeggings(this.parseItem(mob.getLeggings()));
         this.setBoots(this.parseItem(mob.getBoots()));
         this.setWeapon(this.parseItem(mob.getWeapon()));
-        new SoulsTaskManager(this).runTaskTimer(this.getPlugin(), 0, 10);
     }
 
     @Override
@@ -43,6 +43,11 @@ public class KnightOfSouls extends AbstractWitherSkeleton {
     @Override
     public BossConf getBossConf() {
         return this.mob;
+    }
+
+    @Override
+    public void runTask() {
+        new SoulsTaskManager(this).runTaskTimer(this.getPlugin(), 0, 10);
     }
 
     public double getDamagePercent() {

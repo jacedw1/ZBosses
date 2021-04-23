@@ -4,7 +4,9 @@ import me.zelevon.zbosses.config.Droptable;
 
 public interface BossConf {
 
-    Droptable getDrops();
+    Droptable getNormalDrops();
+
+    Droptable getDelayDrops();
 
     int getRandomBuffTimer();
 

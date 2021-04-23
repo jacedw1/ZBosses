@@ -24,8 +24,8 @@ public class GodOfMind extends AbstractWitherSkeleton {
     private MindGuard guard2 = null;
     private PathfinderGoal goal = new PathfinderGoalArrowAttack(this, 1.0D, 40, 80, 15.0F);
 
-    public GodOfMind(Location location) {
-        super(location);
+    public GodOfMind(Location location, boolean delayMob) {
+        super(location, delayMob);
         this.mob = this.getConf().getGodOfMind();
         this.setCustomHealth(mob.getHealth());
         this.updateName();
@@ -34,7 +34,6 @@ public class GodOfMind extends AbstractWitherSkeleton {
         this.setLeggings(this.parseItem(mob.getLeggings()));
         this.setBoots(this.parseItem(mob.getBoots()));
         this.setWeapon(this.parseItem(mob.getWeapon()));
-        new MindTaskManager(this).runTaskTimer(this.getPlugin(), 0, 10);
     }
 
     @Override
@@ -50,6 +49,11 @@ public class GodOfMind extends AbstractWitherSkeleton {
     @Override
     public BossConf getBossConf() {
         return this.mob;
+    }
+
+    @Override
+    public void runTask() {
+        new MindTaskManager(this).runTaskTimer(this.getPlugin(), 0, 10);
     }
 
     public boolean isDOT() {

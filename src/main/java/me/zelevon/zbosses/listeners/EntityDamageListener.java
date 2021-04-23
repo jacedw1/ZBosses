@@ -6,10 +6,14 @@ import me.zelevon.zbosses.mobs.bosses.AbstractWitherSkeleton;
 import me.zelevon.zbosses.mobs.bosses.GodOfMind;
 import me.zelevon.zbosses.mobs.bosses.KnightOfHearts;
 import me.zelevon.zbosses.mobs.bosses.KnightOfSouls;
+import me.zelevon.zbosses.mobs.minions.MindGuard;
+import me.zelevon.zbosses.mobs.minions.SoulMinion;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
+import net.minecraft.server.v1_8_R3.EntityCreature;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import net.minecraft.server.v1_8_R3.Entity;
 import org.bukkit.entity.*;
@@ -42,6 +46,9 @@ public class EntityDamageListener implements Listener {
             return;
         }
         Player player = ((Player)e.getEntity());
+        if(damager instanceof MindGuard) {
+            e.setDamage(e.getDamage() + ((MindGuard)damager).getDamageBonus());
+        }
         if (!(damager instanceof AbstractWitherSkeleton)) {
             return;
         }
@@ -69,7 +76,11 @@ public class EntityDamageListener implements Listener {
         if (!(e.getEntity() instanceof Fireball)) {
             return;
         }
-        if(((CraftEntity)(((Fireball) e.getEntity()).getShooter())).getHandle() instanceof AbstractWitherSkeleton) {
+        Fireball fireball = (Fireball) e.getEntity();
+        if(((CraftEntity)(fireball.getShooter())).getHandle() instanceof AbstractWitherSkeleton) {
+            Location loc = fireball.getLocation();
+            fireball.getWorld().createExplosion(loc.getX(), loc.getY(), loc.getZ(), 5.0F, true, false);
+            fireball.remove();
             e.setCancelled(true);
         }
     }
@@ -106,8 +117,8 @@ public class EntityDamageListener implements Listener {
             if(mind.isAxePhase()) {
                 e.setDamage(e.getDamage() * boss.getDamageMod());
                 AttributeInstance speed = boss.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
-                speed.setValue(speed.getValue() * (1.02F));
-                boss.setDamageMod(boss.getDamageMod() - 0.01D);
+                speed.setValue(Math.min(speed.getValue() * (1.02D), boss.getBaseSpeed() + 0.25D * boss.getBaseSpeed()));
+                boss.setDamageMod(Math.min(boss.getDamageMod() + 0.005D, 1.15));
             }
         }
         if(!(e.getDamager() instanceof Player)) {
@@ -148,5 +159,16 @@ public class EntityDamageListener implements Listener {
         }
         GodOfMind boss = (GodOfMind) entity;
         boss.setLastTarget(player);
+    }
+
+    @EventHandler
+    public void onExplode(EntityDamageEvent e) {
+        Entity entity = ((CraftEntity) e.getEntity()).getHandle();
+        if(! ( (e.getCause() == DamageCause.ENTITY_EXPLOSION) || (e.getCause() == DamageCause.BLOCK_EXPLOSION) ) ) {
+            return;
+        }
+        if(entity instanceof MindGuard || entity instanceof SoulMinion) {
+            e.setCancelled(true);
+        }
     }
 }

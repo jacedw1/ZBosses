@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("FieldMayBeFinal")
 public abstract class AbstractWitherSkeleton extends EntitySkeleton {
 
+    private boolean delayMob;
     private ZBosses plugin;
     private MessageSender messageSender;
     private LivingMobManager mobManager;
@@ -28,8 +29,9 @@ public abstract class AbstractWitherSkeleton extends EntitySkeleton {
     private float lifeStealPercent = 0.1F;
     private double damageMod = 1.0D;
 
-    public AbstractWitherSkeleton(Location location) {
+    public AbstractWitherSkeleton(Location location, boolean delayMob) {
         super(((CraftWorld)location.getWorld()).getHandle());
+        this.delayMob = delayMob;
         this.plugin = ZBosses.getInstance();
         this.messageSender = plugin.getMessageSender();
         this.mobManager = plugin.getMobManager();
@@ -46,6 +48,8 @@ public abstract class AbstractWitherSkeleton extends EntitySkeleton {
 
     public abstract BossConf getBossConf();
 
+    public abstract void runTask();
+
     public void spawn(Player player, String message) {
         this.spawn();
         this.messageSender.msg(player, this.plugin.getPrefix() + message);
@@ -53,6 +57,7 @@ public abstract class AbstractWitherSkeleton extends EntitySkeleton {
 
     public void spawn() {
         mobManager.addBoss(this);
+        this.runTask();
         this.getWorld().addEntity(this);
     }
     public void setHelmet(ItemStack item){
@@ -126,11 +131,19 @@ public abstract class AbstractWitherSkeleton extends EntitySkeleton {
         this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(baseSpeed);
     }
 
+    public double getBaseSpeed() {
+        return baseSpeed;
+    }
+
     public double getDamageMod() {
         return damageMod;
     }
 
     public void setDamageMod(double damageMod) {
         this.damageMod = damageMod;
+    }
+
+    public boolean isDelayMob() {
+        return delayMob;
     }
 }

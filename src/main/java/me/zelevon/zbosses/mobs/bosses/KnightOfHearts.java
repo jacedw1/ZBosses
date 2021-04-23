@@ -3,6 +3,7 @@ package me.zelevon.zbosses.mobs.bosses;
 import me.zelevon.zbosses.config.mobs.BossConf;
 import me.zelevon.zbosses.config.mobs.KnightOfHeartsConf;
 import me.zelevon.zbosses.tasks.bosses.HeartsTaskManager;
+import me.zelevon.zbosses.tasks.bosses.MindTaskManager;
 import org.bukkit.Location;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
@@ -17,8 +18,8 @@ public class KnightOfHearts extends AbstractWitherSkeleton {
     private EnderCrystal crystal1 = null;
     private EnderCrystal crystal2 = null;
 
-    public KnightOfHearts(Location location) {
-        super(location);
+    public KnightOfHearts(Location location, boolean delayMob) {
+        super(location, delayMob);
         this.mob = this.getConf().getKnightOfHearts();
         this.setCustomHealth(mob.getHealth());
         this.updateName();
@@ -27,7 +28,6 @@ public class KnightOfHearts extends AbstractWitherSkeleton {
         this.setLeggings(this.parseItem(mob.getLeggings()));
         this.setBoots(this.parseItem(mob.getBoots()));
         this.setWeapon(this.parseItem(mob.getWeapon()));
-        new HeartsTaskManager(this).runTaskTimer(this.getPlugin(), 0, 10);
     }
 
     @Override
@@ -43,6 +43,11 @@ public class KnightOfHearts extends AbstractWitherSkeleton {
     @Override
     public BossConf getBossConf() {
         return this.mob;
+    }
+
+    @Override
+    public void runTask() {
+        new HeartsTaskManager(this).runTaskTimer(this.getPlugin(), 0, 10);
     }
 
     public EnderCrystal getCrystal1() {

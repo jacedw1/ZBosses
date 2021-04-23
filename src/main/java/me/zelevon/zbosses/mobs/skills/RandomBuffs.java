@@ -9,6 +9,7 @@ import net.minecraft.server.v1_8_R3.GenericAttributes;
 import net.minecraft.server.v1_8_R3.MobEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
 import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -119,9 +120,15 @@ public class RandomBuffs {
         Random rand = new Random();
         for(int i = 0; i < amount; i++) {
             int r = rand.nextInt(radius * 2) - radius;
-            ((Zombie) baseLoc.getWorld().spawnEntity(
+            Zombie zombie = ((Zombie) baseLoc.getWorld().spawnEntity(
                     baseLoc.add(rand.nextBoolean() ? new Vector(r, 0, 0) : new Vector(0, 0, r)),
-                    EntityType.ZOMBIE)).setBaby(isBaby);
+                    EntityType.ZOMBIE));
+            zombie.setBaby(isBaby);
+            zombie.setMaxHealth(35);
+            zombie.setHealth(35);
+            AttributeInstance strength = ((CraftZombie)zombie).getHandle().getAttributeInstance(GenericAttributes.ATTACK_DAMAGE);
+            strength.setValue(strength.getValue() + 2.0);
+
         }
         GeneralSkills.broadcastMessage(boss, "Have fun with your new friends...", 20);
     }

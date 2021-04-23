@@ -36,10 +36,10 @@ public class ZBossesCommands extends BaseCommand {
     @Subcommand("help")
     public void onDefault(CommandSender sender) {
         String message = prefix + "&bCommand Help" + '\n'
-                + "&c/zb spawn &b<boss> &3<optional:delay> &e- spawn &b<boss>&e with an optional &3delay." + '\n'
-                + "&c/zb get &b<boss> &e- get a spawn egg for &b<boss>&e to place down and spawn" + '\n'
-                + "&c/zb list &e- get a list of possible &bbosses&e to use in &b<boss>" + '\n'
-                + "&c/zb living &e- get a list of currently living &bbosses&e and &aminions" + '\n'
+                + "&c/zb spawn &b<boss> &3<optional:delay> &e- spawn &b<boss>&e with an optional &3delay&e. Spawning a mob with a &3delay&e will use the delay loottables." + '\n'
+                + "&c/zb get &b<boss> &e- get a spawn egg for &b<boss>&e to place down and spawn." + '\n'
+                + "&c/zb list &e- get a list of possible &bbosses&e to use in &b<boss>&e." + '\n'
+                + "&c/zb living &e- get a list of currently living &bbosses&e and &aminions&e." + '\n'
                 + "&c/zb help &e- bring up this help page";
         messageSender.msg(sender, message);
     }
@@ -124,24 +124,25 @@ public class ZBossesCommands extends BaseCommand {
     @CommandCompletion("@custommobs seconds")
     @Subcommand("spawn")
     public void onSpawn(Player sender, String mob, @Optional Long seconds){
-        final AbstractWitherSkeleton entity;
+        AbstractWitherSkeleton entity;
         Location loc = sender.getLocation();
-        final String message;
+        String message;
+        boolean delayMob = seconds != null;
         switch(mob) {
             case "God_of_Mind":
-                entity = new GodOfMind(loc);
+                entity = new GodOfMind(loc, delayMob);
                 message = "Successfully spawned &6&lGod of Mind&f.";
                 break;
             case "Knight_of_Body":
-                entity = new KnightOfBody(loc);
+                entity = new KnightOfBody(loc, delayMob);
                 message = "Successfully spawned &c&lKnight of Body&f.";
                 break;
             case "Knight_of_Hearts":
-                entity = new KnightOfHearts(loc);
+                entity = new KnightOfHearts(loc, delayMob);
                 message = "Successfully spawned &d&lKnight of Hearts&f.";
                 break;
             case "Knight_of_Souls":
-                entity = new KnightOfSouls(loc);
+                entity = new KnightOfSouls(loc, delayMob);
                 message = "Successfully spawned &5&lKnight of Souls&f.";
                 break;
             default:
