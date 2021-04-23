@@ -25,7 +25,7 @@ public class MindGuard extends EntityIronGolem {
         Damageable guard = ((Damageable)((this.getBukkitEntity())));
         guard.setMaxHealth(200.0D);
         this.setHealth(200.0F);
-        this.damageBonus = 2.0D;
+        this.damageBonus = 5.0D;
         Location loc = boss.getBukkitEntity().getLocation();
         this.setPosition(loc.getX(), loc.getY(), loc.getZ());
         this.getWorld().addEntity(this);
