@@ -30,13 +30,19 @@ public class KnightOfSoulsConf implements BossConf {
     private String weapon = "AIR";
 
     @Setting
-    private int health = 100;
+    private float health = 100.0F;
 
     @Setting
-    private int randomBuffTimer = 30;
+    private float soulMinionHealth = 50.0F;
 
     @Setting
-    private double randomBuffRadius = 5.0;
+    private double soulMinionDamage = 5.0D;
+
+    @Setting
+    private String phaseTwoMessage = "Prepare to meet a fiery doom! (Phase 2)";
+
+    @Setting
+    private String phaseThreeMessage = "Souls of the dead protect me! (Phase 3)";
 
     @Override
     public Droptable getNormalDrops() {
@@ -68,16 +74,23 @@ public class KnightOfSoulsConf implements BossConf {
         return weapon;
     }
 
-    public int getHealth() {
+    public float getHealth() {
         return health;
     }
 
-    @Override
-    public int getRandomBuffTimer() {
-        return randomBuffTimer * 20;
+    public float getSoulMinionHealth() {
+        return soulMinionHealth;
     }
 
-    public double getRandomBuffRadius() {
-        return randomBuffRadius;
+    public double getSoulMinionDamage() {
+        return soulMinionDamage;
+    }
+
+    public String getPhaseTwoMessage() {
+        return phaseTwoMessage;
+    }
+
+    public String getPhaseThreeMessage() {
+        return phaseThreeMessage;
     }
 }

@@ -30,16 +30,19 @@ public class KnightOfHeartsConf implements BossConf {
     private String weapon = "AIR";
 
     @Setting
-    private int health = 100;
-
-    @Setting
-    private int randomBuffTimer = 30;
-
-    @Setting
-    private double randomBuffRadius = 5.0;
+    private float health = 100;
 
     @Setting
     private int knockbackTimer = 5;
+
+    @Setting
+    private int numCrystals = 2;
+
+    @Setting
+    private int maxCrystalRadius = 20;
+
+    @Setting
+    private String phaseTwoMessage = "My crystals will be your demise! (Phase 2)";
 
     @Override
     public Droptable getNormalDrops() {
@@ -71,20 +74,23 @@ public class KnightOfHeartsConf implements BossConf {
         return weapon;
     }
 
-    public int getHealth() {
+    public float getHealth() {
         return health;
-    }
-
-    @Override
-    public int getRandomBuffTimer() {
-        return randomBuffTimer * 20;
-    }
-
-    public double getRandomBuffRadius() {
-        return randomBuffRadius;
     }
 
     public int getKnockbackTimer() {
         return knockbackTimer * 20;
+    }
+
+    public int getNumCrystals() {
+        return numCrystals;
+    }
+
+    public int getMaxCrystalRadius() {
+        return maxCrystalRadius;
+    }
+
+    public String getPhaseTwoMessage() {
+        return phaseTwoMessage;
     }
 }

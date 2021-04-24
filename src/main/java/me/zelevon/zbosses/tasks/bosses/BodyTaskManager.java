@@ -2,6 +2,7 @@ package me.zelevon.zbosses.tasks.bosses;
 
 import me.zelevon.zbosses.ZBosses;
 import me.zelevon.zbosses.config.mobs.BossConf;
+import me.zelevon.zbosses.config.mobs.KnightOfBodyConf;
 import me.zelevon.zbosses.mobs.bosses.AbstractWitherSkeleton;
 import me.zelevon.zbosses.mobs.bosses.KnightOfBody;
 import me.zelevon.zbosses.mobs.skills.GeneralSkills;
@@ -37,7 +38,7 @@ public class BodyTaskManager extends BukkitRunnable {
         this.plugin = boss.getPlugin();
         this.scheduler = Bukkit.getScheduler();
         this.bossConf = boss.getBossConf();
-        this.randomBuffTask = new RandomBuffTask(this.boss).runTaskTimer(plugin, 0, bossConf.getRandomBuffTimer());
+        this.randomBuffTask = new RandomBuffTask(this.boss).runTaskTimer(plugin, 0, boss.randomBuffTimer());
     }
     @Override
     public void run() {
@@ -51,26 +52,26 @@ public class BodyTaskManager extends BukkitRunnable {
         }
         if(four && health <= .25F * maxHealth) {
             four = false;
-            GeneralSkills.broadcastMessage(boss, "Your flesh heals me! (Phase 4)", 20);
+            GeneralSkills.broadcastMessage(boss, ((KnightOfBodyConf)bossConf).getPhaseFourMessage(), 20);
             boss.setCanLifeSteal(true);
             boss.setLifeStealPercent(0.25F);
             return;
         }
         if(three && health <= .5F * maxHealth) {
             three = false;
-            GeneralSkills.broadcastMessage(boss, "More power... (Phase 3)", 20);
+            GeneralSkills.broadcastMessage(boss, ((KnightOfBodyConf)bossConf).getPhaseThreeMessage(), 20);
             lightningTask.cancel();
             this.boss.resetSpeed();
             boss.addEffect(new MobEffect(5, 100000, 1));
-            this.blindTask = scheduler.runTaskTimer(plugin, () -> blindPlayers(), 0, 200);
+            this.blindTask = scheduler.runTaskTimer(plugin, this::blindPlayers, 0, 200);
             return;
         }
         if(two && health <= .75F * maxHealth) {
             two = false;
-            GeneralSkills.broadcastMessage(boss, "Electricity courses through me! (Phase 2)", 20);
+            GeneralSkills.broadcastMessage(boss, ((KnightOfBodyConf)bossConf).getPhaseTwoMessage(), 20);
             this.lightningTask = scheduler.runTaskTimerAsynchronously(plugin, () -> {
                 GeneralSkills.bossCountdown(boss);
-                scheduler.runTaskLater(plugin, () -> lightningStrike(), 60L);
+                scheduler.runTaskLater(plugin, this::lightningStrike, 60L);
             }, 20, 300);
             return;
         }
@@ -94,7 +95,7 @@ public class BodyTaskManager extends BukkitRunnable {
             AttributeInstance speed = boss.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
             speed.setValue(speed.getValue() * (1.0F + (speedIncreasePercent / 100F)));
         }
-        GeneralSkills.broadcastMessage(boss, "&fHow electric!", 20);
+        GeneralSkills.broadcastMessage(boss, boss.getConf().getLightningMessage(), 20);
     }
 
     public void blindPlayers() {
@@ -106,6 +107,6 @@ public class BodyTaskManager extends BukkitRunnable {
         for(Player player : players) {
             player.addPotionEffect(blindness);
         }
-        GeneralSkills.broadcastMessage(boss, "&fBlinding, isn't it?", 15);
+        GeneralSkills.broadcastMessage(boss, ((KnightOfBodyConf)bossConf).getBlindMessage(), 15);
     }
 }

@@ -8,14 +8,14 @@ import me.zelevon.zbosses.mobs.bosses.KnightOfHearts;
 import me.zelevon.zbosses.mobs.bosses.KnightOfSouls;
 import me.zelevon.zbosses.mobs.minions.MindGuard;
 import me.zelevon.zbosses.mobs.minions.SoulMinion;
-import net.minecraft.server.v1_8_R3.AttributeInstance;
-import net.minecraft.server.v1_8_R3.EntityCreature;
-import net.minecraft.server.v1_8_R3.GenericAttributes;
+import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_8_R3.Entity;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import net.minecraft.server.v1_8_R3.Entity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftFireball;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,6 +24,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
@@ -47,7 +48,8 @@ public class EntityDamageListener implements Listener {
         }
         Player player = ((Player)e.getEntity());
         if(damager instanceof MindGuard) {
-            e.setDamage(e.getDamage() + ((MindGuard)damager).getDamageBonus());
+            e.setCancelled(true);
+            e.setDamage(((MindGuard)damager).getDamage());
         }
         if (!(damager instanceof AbstractWitherSkeleton)) {
             return;
@@ -77,9 +79,18 @@ public class EntityDamageListener implements Listener {
             return;
         }
         Fireball fireball = (Fireball) e.getEntity();
-        if(((CraftEntity)(fireball.getShooter())).getHandle() instanceof AbstractWitherSkeleton) {
+        List<org.bukkit.entity.Entity> entities = e.getDamager().getNearbyEntities(20, 20, 20);
+        boolean nearby = false;
+        for(org.bukkit.entity.Entity entity : entities) {
+            if(((CraftEntity)entity).getHandle() instanceof AbstractWitherSkeleton) {
+                nearby = true;
+                break;
+            }
+        }
+        if(nearby) {
+            System.out.println("is runnninG?");
             Location loc = fireball.getLocation();
-            fireball.getWorld().createExplosion(loc.getX(), loc.getY(), loc.getZ(), 5.0F, true, false);
+            ((CraftWorld)fireball.getWorld()).getHandle().createExplosion(((CraftFireball) fireball).getHandle(), loc.getX(), loc.getY(), loc.getZ(), 3.0F, true, false);
             fireball.remove();
             e.setCancelled(true);
         }
@@ -136,11 +147,12 @@ public class EntityDamageListener implements Listener {
         if(!(mobManager.getMinions().contains(entity))) {
            return;
         }
-        if(e.getCause() == DamageCause.PROJECTILE) {
-            mobManager.removeMinion(entity);
+        e.setCancelled(true);
+        if(!(e.getCause() == DamageCause.PROJECTILE)) {
             return;
         }
-        e.setCancelled(true);
+        mobManager.removeMinion(entity);
+        entity.remove();
     }
 
     @EventHandler
@@ -152,13 +164,35 @@ public class EntityDamageListener implements Listener {
             return;
         }
         Player player = (Player) e.getEntity();
-        Projectile arrow = (Projectile) e.getDamager();
-        Entity entity = ((CraftEntity) arrow.getShooter()).getHandle();
-        if(!(entity instanceof GodOfMind)) {
+        Projectile projectile = (Projectile) e.getDamager();
+        Entity entity = ((CraftEntity) projectile.getShooter()).getHandle();
+        if(entity instanceof GodOfMind) {
+            GodOfMind boss = (GodOfMind) entity;
+            boss.setLastTarget(player);
+        }
+    }
+
+    @EventHandler
+    public void onFireballExplosion(EntityDamageByEntityEvent e) {
+        if(!(e.getCause() == DamageCause.ENTITY_EXPLOSION)) {
             return;
         }
-        GodOfMind boss = (GodOfMind) entity;
-        boss.setLastTarget(player);
+        if(!(e.getEntity() instanceof Player)) {
+            return;
+        }
+        System.out.println(e.getDamager().getClass().getSimpleName());
+        List<org.bukkit.entity.Entity> entities = e.getEntity().getNearbyEntities(20, 20, 20);
+        boolean nearby = false;
+        for(org.bukkit.entity.Entity entity : entities) {
+            if(((CraftEntity)entity).getHandle() instanceof AbstractWitherSkeleton) {
+                nearby = true;
+                break;
+            }
+        }
+        if(nearby) {
+            e.setDamage(ZBosses.getInstance().getConf().getRandomBuffs().getFireballDamage());
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler

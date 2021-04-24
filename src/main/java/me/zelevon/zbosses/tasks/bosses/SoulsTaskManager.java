@@ -2,6 +2,7 @@ package me.zelevon.zbosses.tasks.bosses;
 
 import me.zelevon.zbosses.ZBosses;
 import me.zelevon.zbosses.config.mobs.BossConf;
+import me.zelevon.zbosses.config.mobs.KnightOfSoulsConf;
 import me.zelevon.zbosses.mobs.bosses.KnightOfSouls;
 import me.zelevon.zbosses.mobs.skills.GeneralSkills;
 import me.zelevon.zbosses.mobs.skills.RandomBuffs;
@@ -28,7 +29,7 @@ public class SoulsTaskManager extends BukkitRunnable {
         this.plugin = boss.getPlugin();
         this.scheduler = Bukkit.getScheduler();
         this.bossConf = boss.getBossConf();
-        this.randomBuffTask = new RandomBuffTask(this.boss).runTaskTimer(plugin, 0, bossConf.getRandomBuffTimer());
+        this.randomBuffTask = new RandomBuffTask(this.boss).runTaskTimer(plugin, 0, boss.randomBuffTimer());
     }
 
     @Override
@@ -45,14 +46,14 @@ public class SoulsTaskManager extends BukkitRunnable {
         if(three && health <= .25F * maxHealth) {
             three = false;
             boss.spawnMinions();
-            GeneralSkills.broadcastMessage(boss, "Souls of the dead protect me! (Phase 3)", 20);
+            GeneralSkills.broadcastMessage(boss, ((KnightOfSoulsConf)bossConf).getPhaseThreeMessage(), 20);
             return;
         }
         if(two && health <= .75F * maxHealth) {
             two = false;
             boss.setDamagePercent(0.85);
             this.fireballTask = scheduler.runTaskTimer(plugin, () -> RandomBuffs.fireballBuff(this.boss, 5), 300, 300);
-            GeneralSkills.broadcastMessage(boss, "Prepare to meet a fiery doom! (Phase 2)", 20);
+            GeneralSkills.broadcastMessage(boss, ((KnightOfSoulsConf)bossConf).getPhaseTwoMessage(), 20);
             return;
         }
     }

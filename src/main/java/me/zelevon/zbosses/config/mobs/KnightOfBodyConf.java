@@ -30,13 +30,19 @@ public class KnightOfBodyConf implements BossConf {
     private String weapon = "AIR";
 
     @Setting
-    private int health = 100;
+    private float health = 100;
 
     @Setting
-    private int randomBuffTimer = 30;
+    private String phaseTwoMessage = "Electricity courses through me! (Phase 2)";
 
     @Setting
-    private double randomBuffRadius = 5.0;
+    private String phaseThreeMessage = "More power... (Phase 3)";
+
+    @Setting
+    private String phaseFourMessage = "Your flesh heals me! (Phase 4)";
+
+    @Setting
+    private String blindMessage = "Blinding, isn't it?";
 
     @Override
     public Droptable getNormalDrops() {
@@ -68,16 +74,23 @@ public class KnightOfBodyConf implements BossConf {
         return weapon;
     }
 
-    public int getHealth() {
+    public float getHealth() {
         return health;
     }
 
-    @Override
-    public int getRandomBuffTimer() {
-        return randomBuffTimer * 20;
+    public String getPhaseTwoMessage() {
+        return phaseTwoMessage;
     }
 
-    public double getRandomBuffRadius() {
-        return randomBuffRadius;
+    public String getPhaseThreeMessage() {
+        return phaseThreeMessage;
+    }
+
+    public String getPhaseFourMessage() {
+        return phaseFourMessage;
+    }
+
+    public String getBlindMessage() {
+        return blindMessage;
     }
 }

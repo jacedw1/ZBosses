@@ -19,6 +19,7 @@ public class NMSUtils {
     public static final int CHEST_SLOT = 3;
     public static final int LEG_SLOT = 2;
     public static final int BOOT_SLOT = 1;
+
     public static void registerEntity(String name, int id, Class<? extends EntityInsentient> nmsClass, Class<? extends EntityInsentient> customClass){
         try {
 

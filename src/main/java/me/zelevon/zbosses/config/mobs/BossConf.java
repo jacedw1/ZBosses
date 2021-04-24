@@ -8,6 +8,4 @@ public interface BossConf {
 
     Droptable getDelayDrops();
 
-    int getRandomBuffTimer();
-
 }

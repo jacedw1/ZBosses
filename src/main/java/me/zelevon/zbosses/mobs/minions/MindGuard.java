@@ -13,7 +13,7 @@ public class MindGuard extends EntityIronGolem {
     private GodOfMind boss;
     private GodOfMindConf bossConf;
     private LivingMobManager mobManager;
-    private double damageBonus;
+    private double damage;
 
     public MindGuard(GodOfMind boss) {
         super(boss.getWorld());
@@ -23,9 +23,9 @@ public class MindGuard extends EntityIronGolem {
         this.setCustomName(boss.getMessageSender().colorize("&6Mind Guard"));
         this.setCustomNameVisible(true);
         Damageable guard = ((Damageable)((this.getBukkitEntity())));
-        guard.setMaxHealth(200.0D);
-        this.setHealth(200.0F);
-        this.damageBonus = 5.0D;
+        guard.setMaxHealth(bossConf.getMindGuardHealth());
+        this.setHealth(bossConf.getMindGuardHealth());
+        this.damage = bossConf.getMindGuardDamage();
         Location loc = boss.getBukkitEntity().getLocation();
         this.setPosition(loc.getX(), loc.getY(), loc.getZ());
         this.getWorld().addEntity(this);
@@ -42,7 +42,7 @@ public class MindGuard extends EntityIronGolem {
         return boss;
     }
 
-    public double getDamageBonus() {
-        return damageBonus;
+    public double getDamage() {
+        return damage;
     }
 }

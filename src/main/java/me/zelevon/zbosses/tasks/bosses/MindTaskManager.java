@@ -2,6 +2,7 @@ package me.zelevon.zbosses.tasks.bosses;
 
 import me.zelevon.zbosses.ZBosses;
 import me.zelevon.zbosses.config.mobs.BossConf;
+import me.zelevon.zbosses.config.mobs.GodOfMindConf;
 import me.zelevon.zbosses.mobs.bosses.GodOfMind;
 import me.zelevon.zbosses.mobs.skills.GeneralSkills;
 import me.zelevon.zbosses.mobs.skills.RandomBuffs;
@@ -35,7 +36,7 @@ public class MindTaskManager extends BukkitRunnable {
         this.plugin = boss.getPlugin();
         this.scheduler = Bukkit.getScheduler();
         this.bossConf = boss.getBossConf();
-        this.randomBuffTask = new RandomBuffTask(this.boss).runTaskTimer(plugin, 0, bossConf.getRandomBuffTimer());
+        this.randomBuffTask = new RandomBuffTask(this.boss).runTaskTimer(plugin, 0, boss.randomBuffTimer());
         this.knockbackTask = scheduler.runTaskTimerAsynchronously(plugin, () -> RandomBuffs.knockbackPlayerBuff(this.boss), 500L, 500L);
     }
 
@@ -56,9 +57,9 @@ public class MindTaskManager extends BukkitRunnable {
             boss.resetPathfinder();
             boss.addEffect(new MobEffect(1, 100000, 2));
             boss.setCanLifeSteal(true);
-            boss.setLifeStealPercent(0.15F);
+            boss.setLifeStealPercent(((GodOfMindConf)bossConf).getLifestealEffect());
             boss.spawnGuards();
-            GeneralSkills.broadcastMessage(boss, "Guards! Protect me! (Phase 4)", 20);
+            GeneralSkills.broadcastMessage(boss, ((GodOfMindConf) bossConf).getPhaseFourMessage(), 20);
             return;
         }
         if(three && health <= .5F * maxHealth) {
@@ -75,7 +76,7 @@ public class MindTaskManager extends BukkitRunnable {
                 boss.startBowAttacks();
                 boss.resetSpeed();
                 boss.setInvuln(false);
-                GeneralSkills.broadcastMessage(boss, "Apollo blesses me! (Phase 3)", 20);
+                GeneralSkills.broadcastMessage(boss, ((GodOfMindConf) bossConf).getPhaseThreeMessage(), 20);
             }, 60);
             this.lightningTask = scheduler.runTaskTimerAsynchronously(plugin, () -> lightningStrike(boss.getLastTarget()), 260, 200);
             return;
@@ -93,7 +94,7 @@ public class MindTaskManager extends BukkitRunnable {
                 lightningStrike(players.get(new Random().nextInt(players.size())));
             }, 500, 500);
             boss.setDot(false);
-            GeneralSkills.broadcastMessage(boss, "Axe and you shall receive! (Phase 2)", 20);
+            GeneralSkills.broadcastMessage(boss, ((GodOfMindConf) bossConf).getPhaseTwoMessage(), 20);
             return;
         }
     }
@@ -110,7 +111,7 @@ public class MindTaskManager extends BukkitRunnable {
                 damage /= 4.0D;
             }
             target.damage(damage);
-            GeneralSkills.broadcastMessage(boss, "&fHow electric!", 20);
+            GeneralSkills.broadcastMessage(boss, boss.getConf().getLightningMessage(), 20);
         }, 60L);
     }
 }

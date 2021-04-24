@@ -10,11 +10,14 @@ import me.zelevon.zbosses.mobs.skills.RandomBuffs;
 import me.zelevon.zbosses.tasks.RandomBuffTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.EntityType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.Random;
 
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 public class HeartsTaskManager extends BukkitRunnable {
@@ -35,7 +38,7 @@ public class HeartsTaskManager extends BukkitRunnable {
         this.mobManager = plugin.getMobManager();
         this.scheduler = Bukkit.getScheduler();
         this.bossConf = boss.getBossConf();
-        this.randomBuffTask = new RandomBuffTask(this.boss).runTaskTimer(plugin, 0, bossConf.getRandomBuffTimer());
+        this.randomBuffTask = new RandomBuffTask(this.boss).runTaskTimer(plugin, 0, boss.randomBuffTimer());
     }
 
     @Override
@@ -51,14 +54,25 @@ public class HeartsTaskManager extends BukkitRunnable {
         }
         if(two && health <= .5F * maxHealth) {
             two = false;
-            GeneralSkills.broadcastMessage(boss, "My crystals will be your demise! (Phase 2)", 20);
+            GeneralSkills.broadcastMessage(boss, ((KnightOfHeartsConf)bossConf).getPhaseTwoMessage(), 20);
+            Random rand = new Random();
             Location bossLoc = boss.getBukkitEntity().getLocation();
-            EnderCrystal crystal1 = (EnderCrystal) bossLoc.getWorld().spawnEntity(bossLoc.add(10, 5, 10), EntityType.ENDER_CRYSTAL);
-            EnderCrystal crystal2 = (EnderCrystal) bossLoc.getWorld().spawnEntity(bossLoc.add(-10, 5, -10), EntityType.ENDER_CRYSTAL);
-            mobManager.addMinion(crystal1);
-            mobManager.addMinion(crystal2);
-            boss.setCrystal1(crystal1);
-            boss.setCrystal2(crystal2);
+            World w = bossLoc.getWorld();
+            int r = ((KnightOfHeartsConf)bossConf).getMaxCrystalRadius();
+            int maxX = (int) (bossLoc.getX() + r);
+            int minX = (int) (bossLoc.getX() - r);
+            int minY = (int) bossLoc.getY() + 3;
+            int maxY = (int) bossLoc.getY() + 10;
+            int maxZ = (int) (bossLoc.getZ() + r);
+            int minZ = (int) (bossLoc.getZ() - r);
+            for(int i = 0; i < ((KnightOfHeartsConf)bossConf).getNumCrystals(); i++) {
+                int x = rand.nextInt(maxX + 1 - minX) + minX;
+                int y = rand.nextInt(maxY + 1 - minY) + minY;
+                int z = rand.nextInt(maxZ + 1 - minZ) + minZ;
+                EnderCrystal crystal = (EnderCrystal) bossLoc.getWorld().spawnEntity(new Location(w, x, y, z), EntityType.ENDER_CRYSTAL);
+                mobManager.addMinion(crystal);
+                boss.addCrystal(crystal);
+            }
             long kbt = ((KnightOfHeartsConf)bossConf).getKnockbackTimer();
             this.knockbackTask = scheduler.runTaskTimerAsynchronously(plugin, () -> RandomBuffs.knockbackPlayerBuff(this.boss), kbt, kbt);
             return;

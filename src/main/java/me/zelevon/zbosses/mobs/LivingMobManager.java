@@ -121,6 +121,16 @@ public class LivingMobManager {
         playerDamage.replace(player, playerDamage.get(player) + damage);
     }
 
+    public Double getDamagePercent(AbstractWitherSkeleton boss, Player player) {
+        if(!damageTracker.containsKey(boss)) {
+            return null;
+        }
+        BidiMap<Player, Double> playerDamage = damageTracker.get(boss);
+        if(!playerDamage.containsKey(player)) {
+            return null;
+        }
+        return Math.min(playerDamage.get(player) / boss.getMaxHealth() * 100, 100);
+    }
     public List<Player> getTopThreePlayers(AbstractWitherSkeleton boss) {
         BidiMap<Player, Double> playerDamage = damageTracker.get(boss);
         Double[] damages = Arrays.stream(playerDamage.values().toArray(new Double[0])).sorted().toArray(Double[]::new);

@@ -1,5 +1,6 @@
 package me.zelevon.zbosses.tasks;
 
+import me.zelevon.zbosses.ZBosses;
 import me.zelevon.zbosses.mobs.bosses.AbstractWitherSkeleton;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;

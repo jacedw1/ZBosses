@@ -56,7 +56,7 @@ public class RandomBuffTask extends BukkitRunnable {
                 RandomBuffs.lifeStealBuff(boss);
                 break;
             case 9:
-                RandomBuffs.fireballBuff(boss, 3);
+                RandomBuffs.fireballBuff(boss, boss.getConf().getRandomBuffs().getFireballAmount());
                 break;
             default:
                 break;

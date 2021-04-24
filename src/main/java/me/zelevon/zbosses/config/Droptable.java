@@ -6,7 +6,7 @@ import org.spongepowered.configurate.objectmapping.meta.Setting;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings({"unused", "FieldMayBeFinal"})
+@SuppressWarnings("FieldMayBeFinal")
 @ConfigSerializable
 public class Droptable {
 

@@ -26,7 +26,7 @@ public abstract class AbstractWitherSkeleton extends EntitySkeleton {
     private Config.MobsConf conf;
     private double baseSpeed;
     private boolean canLifeSteal = false;
-    private float lifeStealPercent = 0.1F;
+    private float lifeStealPercent;
     private double damageMod = 1.0D;
 
     public AbstractWitherSkeleton(Location location, boolean delayMob) {
@@ -36,6 +36,7 @@ public abstract class AbstractWitherSkeleton extends EntitySkeleton {
         this.messageSender = plugin.getMessageSender();
         this.mobManager = plugin.getMobManager();
         this.conf = plugin.getConf();
+        this.lifeStealPercent = conf.getRandomBuffs().getLifeStealEffect();
         this.baseSpeed = this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).getValue();
         this.setSkeletonType(1);
         this.setCustomNameVisible(true);
@@ -44,11 +45,17 @@ public abstract class AbstractWitherSkeleton extends EntitySkeleton {
 
     public abstract String getName();
 
-    public abstract double randomBuffRadius();
-
     public abstract BossConf getBossConf();
 
     public abstract void runTask();
+
+    public double randomBuffRadius() {
+        return conf.getRandomBuffs().getRandomBuffRadius();
+    }
+
+    public int randomBuffTimer() {
+        return conf.getRandomBuffs().getRandomBuffTimer();
+    }
 
     public void spawn(Player player, String message) {
         this.spawn();

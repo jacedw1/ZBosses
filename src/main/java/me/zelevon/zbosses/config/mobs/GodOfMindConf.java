@@ -30,13 +30,25 @@ public class GodOfMindConf implements BossConf {
     private String weapon = "DIAMOND_SWORD";
 
     @Setting
-    private int health = 100;
+    private float health = 100;
 
     @Setting
-    private int randomBuffTimer = 30;
+    private float lifestealEffect = 0.15F;
 
     @Setting
-    private double randomBuffRadius = 5.0;
+    private float mindGuardHealth = 50.0F;
+
+    @Setting
+    private double mindGuardDamage = 5.0D;
+
+    @Setting
+    private String phaseTwoMessage = "Axe and you shall receive! (Phase 2)";
+
+    @Setting
+    private String phaseThreeMessage = "Apollo blesses me! (Phase 3)";
+
+    @Setting
+    private String phaseFourMessage = "Guards! Protect me! (Phase 4)";
 
     @Override
     public Droptable getNormalDrops() {
@@ -68,16 +80,31 @@ public class GodOfMindConf implements BossConf {
         return weapon;
     }
 
-    public int getHealth() {
+    public float getHealth() {
         return health;
     }
 
-    @Override
-    public int getRandomBuffTimer() {
-        return randomBuffTimer * 20;
+    public float getLifestealEffect() {
+        return lifestealEffect;
     }
 
-    public double getRandomBuffRadius() {
-        return randomBuffRadius;
+    public float getMindGuardHealth() {
+        return mindGuardHealth;
+    }
+
+    public double getMindGuardDamage() {
+        return mindGuardDamage;
+    }
+
+    public String getPhaseTwoMessage() {
+        return phaseTwoMessage;
+    }
+
+    public String getPhaseThreeMessage() {
+        return phaseThreeMessage;
+    }
+
+    public String getPhaseFourMessage() {
+        return phaseFourMessage;
     }
 }

@@ -36,11 +36,6 @@ public class KnightOfSouls extends AbstractWitherSkeleton {
     }
 
     @Override
-    public double randomBuffRadius() {
-        return mob.getRandomBuffRadius();
-    }
-
-    @Override
     public BossConf getBossConf() {
         return this.mob;
     }

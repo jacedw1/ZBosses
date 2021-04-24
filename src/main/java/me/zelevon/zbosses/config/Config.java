@@ -44,6 +44,12 @@ public class Config {
     public static class MobsConf {
 
         @Setting
+        private RandomBuffConf randomBuffs;
+
+        @Setting
+        private String lightningMessage = "How electric!";
+
+        @Setting
         private KnightOfHeartsConf knightOfHearts;
 
         @Setting
@@ -54,6 +60,14 @@ public class Config {
 
         @Setting
         private GodOfMindConf godOfMind;
+
+        public RandomBuffConf getRandomBuffs() {
+            return randomBuffs;
+        }
+
+        public String getLightningMessage() {
+            return lightningMessage;
+        }
 
         public KnightOfHeartsConf getKnightOfHearts() {
             return knightOfHearts;

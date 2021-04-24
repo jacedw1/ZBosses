@@ -1,6 +1,7 @@
 package me.zelevon.zbosses.mobs.skills;
 
 import me.zelevon.zbosses.ZBosses;
+import me.zelevon.zbosses.config.RandomBuffConf;
 import me.zelevon.zbosses.mobs.bosses.AbstractWitherSkeleton;
 import me.zelevon.zbosses.tasks.FireballTask;
 import me.zelevon.zbosses.tasks.RandomBuffTask;
@@ -9,10 +10,9 @@ import net.minecraft.server.v1_8_R3.GenericAttributes;
 import net.minecraft.server.v1_8_R3.MobEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
 import org.bukkit.entity.*;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -22,31 +22,31 @@ import java.util.Random;
 public class RandomBuffs {
 
     public static void speedBuff(AbstractWitherSkeleton boss) {
-        boss.addEffect(new MobEffect(1, 200, 1));
-        GeneralSkills.broadcastMessage(boss, "Speeding up!", 20);
+        boss.addEffect(new MobEffect(1, boss.getConf().getRandomBuffs().getSpeedBuffDuration(), 1));
+        GeneralSkills.broadcastMessage(boss, boss.getConf().getRandomBuffs().getSpeedMessage(), 20);
     }
 
     public static void strengthBuff(AbstractWitherSkeleton boss) {
-        boss.addEffect(new MobEffect(5, 100, 0));
-        GeneralSkills.broadcastMessage(boss, "I feel more powerful..", 20);
+        boss.addEffect(new MobEffect(5, boss.getConf().getRandomBuffs().getStrengthBuffDuration(), 0));
+        GeneralSkills.broadcastMessage(boss, boss.getConf().getRandomBuffs().getStrengthMessage(), 20);
     }
 
     public static void slownessBuff(AbstractWitherSkeleton boss) {
-        PotionEffect slowness = PotionEffectType.SLOW.createEffect(200, 1);
+        MobEffect slowness = new MobEffect(2, boss.getConf().getRandomBuffs().getSlownessBuffDuration(), 1);
         List<Player> players = GeneralSkills.getNearbyPlayers(boss, boss.randomBuffRadius());
         for(Player player : players) {
-            player.addPotionEffect(slowness);
+            ((CraftPlayer)player).getHandle().addEffect(slowness);
         }
-        GeneralSkills.broadcastMessage(boss, "Slow down!", 20);
+        GeneralSkills.broadcastMessage(boss, boss.getConf().getRandomBuffs().getSlownessMessage(), 20);
     }
 
     public static void miningFatigueBuff(AbstractWitherSkeleton boss) {
-        PotionEffect miningFatigue = PotionEffectType.SLOW_DIGGING.createEffect(120, 2);
+        MobEffect miningFatigue = new MobEffect(4, boss.getConf().getRandomBuffs().getMiningFatigueBuffDuration(), 2);
         List<Player> players = GeneralSkills.getNearbyPlayers(boss, boss.randomBuffRadius());
         for(Player player : players) {
-            player.addPotionEffect(miningFatigue);
+            ((CraftPlayer)player).getHandle().addEffect(miningFatigue);
         }
-        GeneralSkills.broadcastMessage(boss, "Don't attack so fast...", 20);
+        GeneralSkills.broadcastMessage(boss, boss.getConf().getRandomBuffs().getMiningFatigueMessage(), 20);
     }
 
     public static void knockbackPlayerBuff(AbstractWitherSkeleton boss) {
@@ -69,13 +69,13 @@ public class RandomBuffs {
                 Vector knockAway = new Vector(knockX, knockY, knockZ);
                 player.setVelocity(knockAway);
             }
-        GeneralSkills.broadcastMessage(boss, "Shockwave!", 20);
+        GeneralSkills.broadcastMessage(boss, boss.getConf().getRandomBuffs().getKnockbackMessage(), 20);
     }
 
     public static void noKnockbackBuff(AbstractWitherSkeleton boss) {
         boss.getAttributeInstance(GenericAttributes.c).setValue(1.0D);
-        Bukkit.getScheduler().runTaskLater(ZBosses.getInstance(), () -> boss.getAttributeInstance(GenericAttributes.c).setValue(0.0D), 100);
-        GeneralSkills.broadcastMessage(boss, "You can't knock me back! (5s)", 20);
+        Bukkit.getScheduler().runTaskLater(ZBosses.getInstance(), () -> boss.getAttributeInstance(GenericAttributes.c).setValue(0.0D), boss.getConf().getRandomBuffs().getNoKnockbackBuffDuration());
+        GeneralSkills.broadcastMessage(boss, boss.getConf().getRandomBuffs().getNoKnockbackMessage(), 20);
     }
 
     public static void lifeStealBuff(AbstractWitherSkeleton boss) {
@@ -84,8 +84,8 @@ public class RandomBuffs {
             return;
         }
         boss.setCanLifeSteal(true);
-        Bukkit.getScheduler().runTaskLater(ZBosses.getInstance(), () -> boss.setCanLifeSteal(false), 100);
-        GeneralSkills.broadcastMessage(boss, "I'm going to absorb your soul...", 20);
+        Bukkit.getScheduler().runTaskLater(ZBosses.getInstance(), () -> boss.setCanLifeSteal(false), boss.getConf().getRandomBuffs().getLifestealBuffDuration());
+        GeneralSkills.broadcastMessage(boss, boss.getConf().getRandomBuffs().getLifestealMessage(), 20);
     }
 
     public static void fireballBuff(AbstractWitherSkeleton boss, int fireballAmount) {
@@ -104,7 +104,7 @@ public class RandomBuffs {
             new FireballTask(boss, player).runTaskLater(ZBosses.getInstance(), delay);
             delay += 10;
         }
-        GeneralSkills.broadcastMessage(boss, "Fireballs!", 20);
+        GeneralSkills.broadcastMessage(boss, boss.getConf().getRandomBuffs().getFireballMessage(), 20);
     }
 
     public static void spawnZombieHoard(AbstractWitherSkeleton boss) {
@@ -118,18 +118,19 @@ public class RandomBuffs {
     private static void spawnHoard(AbstractWitherSkeleton boss, boolean isBaby, int radius, int amount) {
         Location baseLoc = boss.getBukkitEntity().getLocation();
         Random rand = new Random();
+        RandomBuffConf conf = boss.getConf().getRandomBuffs();
         for(int i = 0; i < amount; i++) {
             int r = rand.nextInt(radius * 2) - radius;
             Zombie zombie = ((Zombie) baseLoc.getWorld().spawnEntity(
                     baseLoc.add(rand.nextBoolean() ? new Vector(r, 0, 0) : new Vector(0, 0, r)),
                     EntityType.ZOMBIE));
             zombie.setBaby(isBaby);
-            zombie.setMaxHealth(35);
-            zombie.setHealth(35);
+            zombie.setMaxHealth(conf.getHoardMobHp());
+            zombie.setHealth(conf.getHoardMobHp());
             AttributeInstance strength = ((CraftZombie)zombie).getHandle().getAttributeInstance(GenericAttributes.ATTACK_DAMAGE);
-            strength.setValue(strength.getValue() + 2.0);
+            strength.setValue(conf.getHoardMobDamage());
 
         }
-        GeneralSkills.broadcastMessage(boss, "Have fun with your new friends...", 20);
+        GeneralSkills.broadcastMessage(boss, boss.getConf().getRandomBuffs().getHoardMessage(), 20);
     }
 }
