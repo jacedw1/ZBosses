@@ -1,6 +1,7 @@
 package me.zelevon.zbosses.listeners;
 
 import me.zelevon.zbosses.ZBosses;
+import me.zelevon.zbosses.config.mobs.GodOfMindConf;
 import me.zelevon.zbosses.mobs.LivingMobManager;
 import me.zelevon.zbosses.mobs.bosses.AbstractWitherSkeleton;
 import me.zelevon.zbosses.mobs.bosses.GodOfMind;
@@ -66,11 +67,13 @@ public class EntityDamageListener implements Listener {
         if(!(boss instanceof GodOfMind) || !((GodOfMind)boss).isDOT()) {
             return;
         }
-        if(new Random().nextDouble() > 0.35) {
+        GodOfMindConf conf = ((GodOfMindConf)boss.getBossConf());
+        if(new Random().nextDouble() > conf.getBleedChance()) {
             return;
         }
-        scheduler.runTaskLaterAsynchronously(this.plugin, () -> player.damage(5), 100);
-        scheduler.runTaskLaterAsynchronously(this.plugin, () -> player.damage(5), 200);
+        for(int i = 0; i < conf.getBleedTicks(); i++) {
+            scheduler.runTaskLaterAsynchronously(plugin, () -> player.damage(conf.getBleedTickDamage()), conf.getTimeBetweenTicks() * i+1);
+        }
     }
 
     @EventHandler

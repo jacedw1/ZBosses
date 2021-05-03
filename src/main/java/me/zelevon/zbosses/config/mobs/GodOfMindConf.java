@@ -42,6 +42,18 @@ public class GodOfMindConf implements BossConf {
     private double mindGuardDamage = 5.0D;
 
     @Setting
+    private double bleedChance = 0.35D;
+
+    @Setting
+    private double bleedTickDamage = 5.0D;
+
+    @Setting
+    private int bleedTicks = 2;
+
+    @Setting
+    private long timeBetweenTicks = 5L;
+
+    @Setting
     private String phaseTwoMessage = "Axe and you shall receive! (Phase 2)";
 
     @Setting
@@ -94,6 +106,22 @@ public class GodOfMindConf implements BossConf {
 
     public double getMindGuardDamage() {
         return mindGuardDamage;
+    }
+
+    public double getBleedChance() {
+        return bleedChance;
+    }
+
+    public double getBleedTickDamage() {
+        return bleedTickDamage;
+    }
+
+    public int getBleedTicks() {
+        return bleedTicks;
+    }
+
+    public long getTimeBetweenTicks() {
+        return timeBetweenTicks;
     }
 
     public String getPhaseTwoMessage() {
